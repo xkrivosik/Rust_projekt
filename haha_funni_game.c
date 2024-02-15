@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+//holokaust sa nestal
 //mas mali kokot
 //nie ty
 //bombaklat
