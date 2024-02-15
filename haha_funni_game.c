@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+//holokaust sa nestal
 //mas mali kokot
 void print_board(char board[3][3]) {
     printf("  1   2   3\n");
