@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+//mas mali kokot
 void print_board(char board[3][3]) {
     printf("  1   2   3\n");
     printf("A %c | %c | %c \n", board[0][0], board[0][1], board[0][2]);
