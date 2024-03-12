@@ -1,6 +1,8 @@
 (A)->Andy
 (T)->Tošo
 
-(A)-	Mohli by sme skúsiť spraviť apku cez ten slit, možno spraviť desktop apku, nejakú apku čo sleduje zdravie(running app, calories and workout sledovač), apku do auta(niečo ako netflix napr.,
+(A)-	Mohli by sme skúsiť spraviť apku cez ten slit, možno spraviť desktop apku,
+	nejakú apku čo sleduje zdravie(running app, calories and workout sledovač),
+	apku do auta(niečo ako netflix napr.)
 	chat apku do auta??), hru maybe(workoutdungeon??).
 (A)-	Videl som aj že currency calcultor by mohol byť good, finančná apka sounds interesting
