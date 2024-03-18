@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Items</h1>
+    <div id="itemList">
+        <!-- Items will be listed here -->
+    </div>
+    <div>
+        <input type="text" id="itemName" placeholder="Enter item name">
+        <button onclick="addItem()">Add Item</button>
+        <button onclick="deleteAllItems()">Delete All Items</button>
+    </div>
+
+    <script>
+        function addItem() {
+            const itemName = document.getElementById('itemName').value;
+            const items = JSON.parse(localStorage.getItem('items')) || [];
+            items.push({ name: itemName });
+            localStorage.setItem('items', JSON.stringify(items));
+            loadItems();
+        }
+
+        function loadItems() {
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            const items = JSON.parse(localStorage.getItem('items')) || [];
+            items.forEach(item => {
+                const listItem = document.createElement('div');
+                listItem.textContent = item.name;
+                itemList.appendChild(listItem);
+            });
+        }
+
+        function deleteAllItems() {
+            localStorage.removeItem('items');
+            loadItems(); // Refresh the list after deletion
+        }
+
+        // Load items when the page loads
+        loadItems();
+    </script>
+</body>
+</html>
