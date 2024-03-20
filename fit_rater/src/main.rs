@@ -1,7 +1,7 @@
-use rocket::response::NamedFile;
+use rocket::fs::NamedFile;
 use std::path::{Path, PathBuf};
 
-#[get("/<file..>", rank = 2)]
+#[rocket::get("/<file..>", rank = 2)]
 fn static_files(file: PathBuf) -> Option<NamedFile> {
     NamedFile::open(Path::new("static/").join(file)).ok()
 }

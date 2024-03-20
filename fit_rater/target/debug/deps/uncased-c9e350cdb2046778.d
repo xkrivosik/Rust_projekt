@@ -1,0 +1,11 @@
+C:\Users\titob\OneDrive\Desktop\rust projekt\fit_rater\target\debug\deps\libuncased-c9e350cdb2046778.rmeta: C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\lib.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\serde.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\owned.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\borrowed.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\as_uncased.rs
+
+C:\Users\titob\OneDrive\Desktop\rust projekt\fit_rater\target\debug\deps\libuncased-c9e350cdb2046778.rlib: C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\lib.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\serde.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\owned.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\borrowed.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\as_uncased.rs
+
+C:\Users\titob\OneDrive\Desktop\rust projekt\fit_rater\target\debug\deps\uncased-c9e350cdb2046778.d: C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\lib.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\serde.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\owned.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\borrowed.rs C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\as_uncased.rs
+
+C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\lib.rs:
+C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\serde.rs:
+C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\owned.rs:
+C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\borrowed.rs:
+C:\Users\titob\.cargo\registry\src\index.crates.io-6f17d22bba15001f\uncased-0.9.10\src\as_uncased.rs:
