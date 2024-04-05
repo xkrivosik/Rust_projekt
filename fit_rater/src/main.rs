@@ -1,31 +1,32 @@
-use std::fs::OpenOptions;
-use std::io::{self, Write};
-
+//use std::fs::OpenOptions;
+//use std::io::{self, Write};
+use std::io;
+mod  createacc;
 fn main() {
-    let mut username = String::new();
-    let mut password = String::new();
-    loop {
-    println!("Zadaj meno:");
-    username.clear();
-    io::stdin().read_line(&mut username).expect("Failed to read username");
+    let mut step = String::new();
 
-    println!("Zadaj Heslo:");
-    password.clear();
-    io::stdin().read_line(&mut password).expect("Failed to read password");
-   if username.trim().is_empty()||password.trim().is_empty(){
+    loop {
+    
+
+    println!("1: create acount\n2: login\n3: exit");
+    step.clear();
+    io::stdin().read_line(&mut step).expect("Failed to read password");
+
+   if step.trim().is_empty(){
         println!("invalid input!!!");
     }
-    else{
+    else if step.trim()=="3"{
+        break;
+    }
+    else if step.trim()=="1"{
+        createacc::lgoin();
+    }
+    else if step.trim()=="2"{
+        println!("login good");
+    }
+    else {
         break;
     }
 }
-    let mut file = OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open("src/login.txt")
-        .expect("Failed to open file");
-    //comand na print to file 
-    writeln!(file, "{}||{}", username.trim(), password.trim())
-        .expect("Failed to write to file");
-    println!("Username and password saved");
+    
 }
