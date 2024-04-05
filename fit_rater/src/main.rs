@@ -19,7 +19,7 @@ fn main() {
         break;
     }
     else if step.trim()=="1"{
-        createacc::lgoin();
+        createacc::new_acc();
     }
     else if step.trim()=="2"{
         println!("login good");
