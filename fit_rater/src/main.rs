@@ -2,6 +2,7 @@
 //use std::io::{self, Write};
 use std::io;
 mod  user;
+mod top_rater;
 fn main() {
     //Command na vstup do appky
     let mut step = String::new();
@@ -46,7 +47,7 @@ fn main() {
 
         app_command.clear();
         io::stdin().read_line(&mut app_command).expect("Failed to read command.");
-
+        
         if app_command.trim().is_empty(){
             println!("Failed to read input.");
         }
@@ -72,7 +73,7 @@ fn main() {
             current_user_score +=1;
         }
         else if app_command.trim()=="3"{
-            println!("Best Raters tu");
+            top_rater::top_rate();
             break;
         }
         else if app_command.trim()=="4"{
