@@ -1,5 +1,31 @@
+//crate na hashovanie
+extern crate sha2;
+use sha2::{Digest, Sha256};
+
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, Write};
+
+
+/* Hashing function
+fn hash(data: &str) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(data);
+    let result = hasher.finalize();
+    format!("{:x}", result)
+}
+
+// Unhashing function (brute force)
+fn unhash(target_hash: &str) -> Option<String> {
+    for i in 0..=9999 {
+        let candidate = format!("{:04}", i); // Padding with leading zeros
+        if hash(&candidate) == target_hash {
+            return Some(candidate);
+        }
+    }
+    None
+}
+*/
+
 
 pub fn register() -> String{
     let mut username = String::new();
