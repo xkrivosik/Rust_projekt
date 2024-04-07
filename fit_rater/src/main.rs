@@ -2,7 +2,8 @@
 //use std::io::{self, Write};
 use std::io;
 mod  user;
-mod top_rater;
+mod display_top;
+mod fitness;
 fn main() {
     //Command na vstup do appky
     let mut step = String::new();
@@ -43,7 +44,8 @@ fn main() {
             println!("What would you like to do?
         1: Check your profile       2: Rate
         3: Diplay best Raters       4: Display best fitness centres
-        5: Add a fitness centre     6: Exit");
+        5: Add a fitness centre     6: Display fitness centers
+        7: Exit");
 
         app_command.clear();
         io::stdin().read_line(&mut app_command).expect("Failed to read command.");
@@ -73,18 +75,24 @@ fn main() {
             current_user_score +=1;
         }
         else if app_command.trim()=="3"{
-            top_rater::top_rate();
+            display_top::top_rates();
             break;
         }
         else if app_command.trim()=="4"{
             println!("Best centra tu");
+            display_top::top_fitness();
             break;
         }
         else if app_command.trim()=="5"{
             println!("Adding tu");
+            fitness::add_fit();
             break;
         }
         else if app_command.trim()=="6"{
+            //search tu 
+            return;
+        }
+        else if app_command.trim()=="7"{
             return;
         }
         else {

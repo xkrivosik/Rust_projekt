@@ -15,7 +15,7 @@ impl Person {
     }
 }
 
-pub fn top_rate() {
+pub fn top_rates() {
     // Open the file
     if let Ok(file) = File::open("src/user_info.txt") {
         let mut people: Vec<Person> = Vec::new();
@@ -51,6 +51,9 @@ pub fn top_rate() {
     } else {
         println!("Failed to open user_info.txt");
     }
+}
+pub fn top_fitness(){
+    
 }
 
 
