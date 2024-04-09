@@ -4,4 +4,4 @@ tomas:5846:12
 fero:pero:3
 karol:ano:7
 imro:neviem:6
-
+mačka:ahoj:42

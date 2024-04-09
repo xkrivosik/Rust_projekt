@@ -1,2 +1,4 @@
-FitUp:Trnava:5:36:120:0:0:0:0
-tosova garaz:tosova garaz:15:0:0:0:0:0:0
+Andyho rit:U Andyho:1:15:12:3:6:7:8:6:5:2
+fitup:Trnava:5:36:159:0:0:0:0:0:0:0
+Hemilton:Bratislava:9:58:235:0:0:0:0:0:0:0
+365:Trnava:5:40:169:0:0:0:0:0:0:0

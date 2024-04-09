@@ -78,7 +78,8 @@ fn main() {
         else if app_command.trim()=="2"{
             println!("Rating tu (zatial iba da +1 do skore pre testovanie)");
             current_user_score +=1;
-        }
+            fitness::rate_fittnes();
+               }
         else if app_command.trim()=="3"{
             display_top::top_rates();
             let mut back = String::new();
@@ -107,7 +108,8 @@ fn main() {
             break;
         }
         else if app_command.trim()=="6"{
-            //search tu 
+            
+            fitness::display_fitness();
             return;
         }
         else if app_command.trim()=="7"{
