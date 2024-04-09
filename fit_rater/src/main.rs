@@ -4,6 +4,11 @@ use std::io;
 mod  user;
 mod display_top;
 mod fitness;
+
+/*TODO textak s fitness centrami, diplay best centra/vsetky, rateovanie, inspect mozno komentare, nejaky rank system by mohol byt. 
+odstranenie zbitocnych lineov, encryptovanie/decryptovanie
+maybee gui?? */
+
 fn main() {
     //Command na vstup do appky
     let mut step = String::new();
@@ -76,7 +81,20 @@ fn main() {
         }
         else if app_command.trim()=="3"{
             display_top::top_rates();
-            break;
+            let mut back = String::new();
+
+            loop {
+                println!("\nPress 'e' to go back");
+                back.clear();
+                io::stdin().read_line(&mut back).expect("Failed to read command.");
+        
+                if step.trim().is_empty(){
+                    println!("Failed to read input.");
+                }
+                else if back.trim()=="e"{
+                    break;
+                }
+            }
         }
         else if app_command.trim()=="4"{
             println!("Best centra tu");
