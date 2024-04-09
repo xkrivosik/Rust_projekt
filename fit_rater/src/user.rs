@@ -39,7 +39,8 @@ pub fn register() -> String{
         .expect("Failed to open file");
 
     //Ulozenie do fileu
-    writeln!(file, "{}:{}:0", username.trim(), password.trim())
+    let encrpted_pass = encrypt(password.trim());
+    writeln!(file, "{}:{}:0", username.trim(), encrpted_pass.trim())
         .expect("Failed to write to file");
     println!("Account {} created",username.trim());
 
@@ -67,7 +68,8 @@ pub fn login() -> String{
         }
         else {
             //Check pre meno a heslo
-            if check_credentials(username.trim(), password.trim()) {
+            let decrpyt_pass = encrypt(password.trim());
+            if check_credentials(username.trim(), decrpyt_pass.trim()) {
                 println!("Login successful!\nWelcome {}!",username.trim());
                 return username;
             } 
@@ -137,3 +139,73 @@ pub fn get_score(username: &str) -> i32 {
     println!("User {} not found", username);
     -1
 }
+
+fn encrypt(input: &str) -> String {
+    let mut result = String::new();
+    let mut i = 0;
+    for ch in input.chars() {
+        let new_char = match ch {
+            ' ' => ' ',
+            _ => {
+                let unicode_value = ch as u32;
+                let new_unicode_value = unicode_value + match i {
+                    1 => 9,
+                    2 => 6,
+                    3 => 4,
+                    4 => 7,
+                    5 => 5,
+                    6 => 13,
+                    7 => 2,
+                    8 => 11,
+                    9 => 3,
+                    10 => 15,
+                    11 => 3,
+                    12 => 14,
+                    13 => 9,
+                    14 => 12,
+                    15 => 4,
+                    _ => 1,
+                };
+                i += 1;
+                std::char::from_u32(new_unicode_value).unwrap()
+            }
+        };
+        result.push(new_char);
+    }
+    result
+}
+
+/*fn decrypt(input: &str) -> String {
+    let mut result = String::new();
+    let mut i = 0;
+    for ch in input.chars() {
+        let new_char = match ch {
+            ' ' => ' ',
+            _ => {
+                let unicode_value = ch as u32;
+                let new_unicode_value = unicode_value - match i {
+                    1 => 9,
+                    2 => 6,
+                    3 => 4,
+                    4 => 7,
+                    5 => 5,
+                    6 => 13,
+                    7 => 2,
+                    8 => 11,
+                    9 => 3,
+                    10 => 15,
+                    11 => 3,
+                    12 => 14,
+                    13 => 9,
+                    14 => 12,
+                    15 => 4,
+                    _ => 1,
+                };
+                i += 1;
+                std::char::from_u32(new_unicode_value).unwrap()
+            }
+        };
+        result.push(new_char);
+    }
+    result
+}*/

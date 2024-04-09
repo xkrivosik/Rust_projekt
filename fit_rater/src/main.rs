@@ -5,9 +5,8 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO textak s fitness centrami, diplay best centra/vsetky, rateovanie, inspect mozno komentare, nejaky rank system by mohol byt. 
-odstranenie zbitocnych lineov, encryptovanie/decryptovanie
-maybee gui?? */
+/*TODO poriesit : v hesle(encrypt), inspect mozno komentare, nejaky rank system by mohol byt. 
+odstranenie zbitocnych lineov,maybee gui?? */
 
 fn main() {
     //Command na vstup do appky
