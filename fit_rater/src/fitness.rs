@@ -251,13 +251,13 @@ pub fn rate_fittnes(){
 
     // Increase the number of raters for the selected fitness center
     selected_center.raaters += 1;
-    selected_center.score=((selected_center.clean*2+selected_center.personal*2+selected_center.equip*3+selected_center.whole*1+selected_center.service*1)/(selected_center.raaters*9))as f32;
+    selected_center.score=((selected_center.clean*2+selected_center.personal*2+selected_center.equip*3+selected_center.whole*1+selected_center.service*1)as f32)/(selected_center.raaters*9)as f32;
     // Rewrite the text file with updated ratings
     if let Ok(mut file) = File::create("src/fittnes_info.txt") {
         for center in &fitness_centers {
             writeln!(
                 file,
-                "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
+                "{}:{}:{}:{}:{}:{:.2}:{}:{}:{}:{}:{}:{}",
                 center.name,
                 center.location,
                 center.day_price,
