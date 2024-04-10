@@ -4,8 +4,8 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO poriesit : v hesle(decrypt), testing treba poriadny error handleing na rate a add, inspect, mozno komentare, nejaky rank system by mohol byt. 
-odstranenie zbitocnych lineov,maybee gui?? */
+/*TODO poriesit : v hesle(decrypt)(done), testing treba poriadny error handleing na rate(done) a add(done), inspect(done), mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), nejaky rank system by mohol byt. 
+odstranenie zbitocnych lineov,maybee gui??(jebe) */
 
 fn main() {
     //Command na vstup do appky
@@ -57,10 +57,10 @@ fn main() {
 //-------------------------------
             println!("What would you like to do?
         1: Check your profile       2: Rate
-        3: Diplay best Raters       4: Display best fitness centres
-        5: Add a fitness centre     6: Display fitness centers
+        3: Inspect fitness          4: Display best fitness centres
+        5: Add a fitness centre     6: Diplay best Raters
         7: Exit");
-
+        
         app_command.clear();
         io::stdin().read_line(&mut app_command).expect("Failed to read command.");
         
@@ -118,7 +118,7 @@ fn main() {
             current_user_score +=1;
             fitness::rate_fittnes();
                }
-        else if app_command.trim()=="3"{
+        else if app_command.trim()=="6"{
             //---------------------------- 
             let output = Command::new("cmd")
                          .args(&["/C", "cls"])
@@ -221,7 +221,7 @@ fn main() {
             }
             
         }
-        else if app_command.trim()=="6"{
+        else if app_command.trim()=="3"{
             //---------------------------- 
             let output = Command::new("cmd")
                          .args(&["/C", "cls"])
@@ -232,31 +232,7 @@ fn main() {
                               eprintln!("Failed to clear terminal");
                                      }
             //-------------------------------
-            fitness::display_fitness();
-            let mut back = String::new();
-
-            loop {
-                println!("\nPress 'e' to go back");
-                back.clear();
-                io::stdin().read_line(&mut back).expect("Failed to read command.");
-        
-                if step.trim().is_empty(){
-                    println!("Failed to read input.");
-                }
-                else if back.trim()=="e"{
-                    break;
-                }
-
-                let output = Command::new("cmd")
-                         .args(&["/C", "cls"])
-                         .status()
-                         .expect("Failed to clear terminal");
-
-                        if !output.success() {
-                              eprintln!("Failed to clear terminal");
-                        }
-                fitness::display_fitness();
-            }
+            fitness::inspect();
             
         }
         else if app_command.trim()=="7"{

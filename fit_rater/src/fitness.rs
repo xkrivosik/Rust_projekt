@@ -1,5 +1,6 @@
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, Write};
+
 use std::path::Path;
 
 // Define a struct to represent fitness center information
@@ -55,6 +56,7 @@ pub fn add_fit(){
         if name.trim().is_empty()||location.trim().is_empty()||den_vstup.trim().is_empty(){
             println!("Name, location or price is empty");
         }
+        
         else{
             break;
         }
@@ -124,18 +126,18 @@ pub fn display_fitness() {
             }
         }
     }
-
     // Now you have all fitness center information in `fitness_centers` vector
     // You can further process or display this information as needed
-    let mut id=0;
+    let mut id = 0;
     for center in &fitness_centers {
-        println!("      ----------------------------------------
-       | Name: {}           Day price: {}€    
-       | Location: {}       Month price: {}€     
-       | ID:{}              Year price: {}€",center.name,center.day_price,center.location,center.month_price,id,center.year_price);
-       id+=1;
+        println!(
+"       -------------------------------------------------
+           | ID: {}  Name: {}     Location: {}",
+            id, center.name, center.location
+        );
+        id += 1;
     }
-    print!("      ----------------------------------------\n");
+    println!("       -------------------------------------------------");
 }
 
 // Function to read lines from a file
@@ -196,15 +198,8 @@ pub fn rate_fittnes(){
 
     // Now you have all fitness center information in `fitness_centers` vector
     // You can further process or display this information as needed
-    let mut id=0;
-    for center in &fitness_centers {
-        println!("      ----------------------------------------
-       | Name: {}           Day price: {}€    
-       | Location: {}       Month price: {}€     
-       | ID:{}              Year price: {}€",center.name,center.day_price,center.location,center.month_price,id,center.year_price);
-       id+=1;
-    }
-    print!("      ----------------------------------------\n");
+    
+    display_fitness();
     println!("Enter the ID of the fitness center you want to rate:");
     let mut selected_id = String::new();
     io::stdin().read_line(&mut selected_id).expect("Failed to read input");
@@ -218,37 +213,77 @@ pub fn rate_fittnes(){
     let selected_center = &mut fitness_centers[selected_id];
 
     // Collect ratings for different aspects
-    println!("Enter ratings (0-5) for the following aspects:");
-    println!("Cleanliness:");
-    let mut clean_rating = String::new();
-    io::stdin().read_line(&mut clean_rating).expect("Failed to read input");
-    let clean_rating: i32 = clean_rating.trim().parse().expect("Invalid rating");
-    selected_center.clean += clean_rating;
-
-    println!("Personal:");
-    let mut personal_rating = String::new();
-    io::stdin().read_line(&mut personal_rating).expect("Failed to read input");
-    let personal_rating: i32 = personal_rating.trim().parse().expect("Invalid rating");
-    selected_center.personal += personal_rating;
-
-    println!("Equipment quality:");
-    let mut equip_rating = String::new();
-    io::stdin().read_line(&mut equip_rating).expect("Failed to read input");
-    let equip_rating: i32 = equip_rating.trim().parse().expect("Invalid rating");
-    selected_center.equip += equip_rating;
-
-    println!("Overall satisfaction:");
-    let mut whole_rating = String::new();
-    io::stdin().read_line(&mut whole_rating).expect("Failed to read input");
-    let whole_rating: i32 = whole_rating.trim().parse().expect("Invalid rating");
-    selected_center.whole += whole_rating;
-
-    println!("Service quality:");
-    let mut service_rating = String::new();
-    io::stdin().read_line(&mut service_rating).expect("Failed to read input");
-    let service_rating: i32 = service_rating.trim().parse().expect("Invalid rating");
-    selected_center.service+= service_rating;
-
+    loop {
+        println!("Enter ratings (0-5) for the following aspects:");
+        
+        // Cleanliness rating
+        println!("Cleanliness:");
+        let mut clean_rating = String::new();
+        io::stdin().read_line(&mut clean_rating).expect("Failed to read input");
+        let clean_rating: i32 = match clean_rating.trim().parse() {
+            Ok(rating) if rating >= 0 && rating <= 5 => rating,
+            _ => {
+                println!("Invalid rating! Please enter a rating between 0 and 5.");
+                continue;
+            }
+        };
+        selected_center.clean += clean_rating;
+    
+        // Personal rating
+        println!("Personal:");
+        let mut personal_rating = String::new();
+        io::stdin().read_line(&mut personal_rating).expect("Failed to read input");
+        let personal_rating: i32 = match personal_rating.trim().parse() {
+            Ok(rating) if rating >= 0 && rating <= 5 => rating,
+            _ => {
+                println!("Invalid rating! Please enter a rating between 0 and 5.");
+                continue;
+            }
+        };
+        selected_center.personal += personal_rating;
+    
+        // Equipment quality rating
+        println!("Equipment quality:");
+        let mut equip_rating = String::new();
+        io::stdin().read_line(&mut equip_rating).expect("Failed to read input");
+        let equip_rating: i32 = match equip_rating.trim().parse() {
+            Ok(rating) if rating >= 0 && rating <= 5 => rating,
+            _ => {
+                println!("Invalid rating! Please enter a rating between 0 and 5.");
+                continue;
+            }
+        };
+        selected_center.equip += equip_rating;
+    
+        // Overall satisfaction rating
+        println!("Overall satisfaction:");
+        let mut whole_rating = String::new();
+        io::stdin().read_line(&mut whole_rating).expect("Failed to read input");
+        let whole_rating: i32 = match whole_rating.trim().parse() {
+            Ok(rating) if rating >= 0 && rating <= 5 => rating,
+            _ => {
+                println!("Invalid rating! Please enter a rating between 0 and 5.");
+                continue;
+            }
+        };
+        selected_center.whole += whole_rating;
+    
+        // Service quality rating
+        println!("Service quality:");
+        let mut service_rating = String::new();
+        io::stdin().read_line(&mut service_rating).expect("Failed to read input");
+        let service_rating: i32 = match service_rating.trim().parse() {
+            Ok(rating) if rating >= 0 && rating <= 5 => rating,
+            _ => {
+                println!("Invalid rating! Please enter a rating between 0 and 5.");
+                continue;
+            }
+        };
+        selected_center.service += service_rating;
+    
+        // Exit the loop if all ratings are collected successfully
+        break;
+    }
     // Increase the number of raters for the selected fitness center
     selected_center.raaters += 1;
     selected_center.score=((selected_center.clean*2+selected_center.personal*2+selected_center.equip*3+selected_center.whole*1+selected_center.service*1)as f32)/(selected_center.raaters*9)as f32;
@@ -276,4 +311,111 @@ pub fn rate_fittnes(){
         println!("Failed to open file for writing!");
     }
 
+}
+
+pub fn inspect() {
+
+    let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
+
+    if let Ok(lines) = read_lines("src/fittnes_info.txt") {
+        
+        for line in lines {
+            if let Ok(ip) = line {
+               
+                let parts: Vec<&str> = ip.split(':').collect();
+
+                
+                if parts.len() == 12 {
+               
+                    let name = parts[0].to_string();
+                    let location = parts[1].to_string();
+                    let day_price = parts[2].parse().unwrap_or(0);
+                    let month_price = parts[3].parse().unwrap_or(0);
+                    let year_price = parts[4].parse().unwrap_or(0);
+
+                  
+                    let fitness_center = FitnessCenter {
+                        name,
+                        location,
+                        day_price,
+                        month_price,
+                        year_price,
+                        score: 0.0,
+                        clean: 0,
+                        personal: 0,
+                        equip: 0,
+                        whole: 0,
+                        service: 0,
+                        raaters: 0,
+                    };
+                    fitness_centers.push(fitness_center);
+                }
+            }
+        }
+    }
+
+    display_fitness();
+
+    loop {
+    
+        println!("Enter the ID of the fitness center you want to inspect:");
+        let mut input_id = String::new();
+        io::stdin()
+            .read_line(&mut input_id)
+            .expect("Failed to read input");
+
+       
+        let input_id = input_id.trim();
+
+        if input_id.is_empty() {
+            continue;
+        }
+
+        let index: usize = match input_id.parse() {
+            Ok(index) => index,
+            Err(_) => {
+                println!("Invalid ID!");
+                continue;
+            }
+        };
+
+        if index >= fitness_centers.len() {
+            println!("Invalid ID!");
+            continue;
+        }
+
+        let selected_fitness = &fitness_centers[index];
+
+        println!(
+            "       -------------------------------------------------
+            | Name: {}           Day price: {}€    
+            | Location: {}       Month price: {}€     
+            | ID: {}              Year price: {}€",
+            selected_fitness.name,
+            selected_fitness.day_price,
+            selected_fitness.location,
+            selected_fitness.month_price,
+            index,
+            selected_fitness.year_price
+        );
+        println!("       -------------------------------------------------");
+
+        println!("Enter a comment or type 'e' to exit:");
+        let mut comment = String::new();
+        io::stdin()
+            .read_line(&mut comment)
+            .expect("Failed to read input");
+
+        let comment = comment.trim();
+
+        if comment == "e" {
+            return;
+        }
+        else{
+            //to do comment insert a save do filu 
+            //dal by som ze pri inspect ti vypise komenty aj s menom to staci len aby sa do tejto funkcie posielal curentuser
+            //nemam tusenie ako to savnut a inspektnut asi novy txt file a podla indexu
+            return;
+        }
+    }
 }
