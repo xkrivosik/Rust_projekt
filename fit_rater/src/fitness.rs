@@ -2,7 +2,6 @@ use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, Write};
 
 use std::path::Path;
-
 // Define a struct to represent fitness center information
 #[derive(Debug)]
 struct FitnessCenter {
@@ -194,10 +193,6 @@ pub fn rate_fittnes(){
             }
         }
     }
-
-
-    // Now you have all fitness center information in `fitness_centers` vector
-    // You can further process or display this information as needed
     
     display_fitness();
     println!("Enter the ID of the fitness center you want to rate:");
@@ -310,7 +305,6 @@ pub fn rate_fittnes(){
     } else {
         println!("Failed to open file for writing!");
     }
-
 }
 
 pub fn inspect() {

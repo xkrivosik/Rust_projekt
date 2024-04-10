@@ -4,14 +4,15 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO poriesit : v hesle(decrypt)(done), testing treba poriadny error handleing na rate(done) a add(done), inspect(done), mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), nejaky rank system by mohol byt. 
-odstranenie zbitocnych lineov,maybee gui??(jebe) */
+/*TODO poriesit : v hesle(decrypt), mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), nejaky rank system by mohol byt. 
+odstranenie zbitocnych lineov,maybee gui??(jebe))(mne??? nieeee) */
 
 fn main() {
     //Command na vstup do appky
     let mut step = String::new();
     let current_user:String;
     let mut current_user_score:i32;
+    let mut current_user_rank:String;
 
     loop {
         println!("1: Login\n2: Register\n3: Exit");
@@ -38,6 +39,7 @@ fn main() {
     }
 
     current_user_score = user::get_score(&current_user.trim());
+    current_user_rank = user::get_rank(current_user_score);
 
     //Command pre pohyb v appke
     let mut app_command = String::new();
@@ -78,7 +80,7 @@ fn main() {
                               eprintln!("Failed to clear terminal");
                                      }
             //-------------------------------
-            println!("Name: {}Score: {}",current_user, current_user_score);
+            println!("Name: {}Score: {}\nRank: {}",current_user, current_user_score, current_user_rank);
             let mut back = String::new();
 
             loop {
@@ -116,7 +118,9 @@ fn main() {
                                      }
             //-------------------------------
             current_user_score +=1;
+            current_user_rank = user::get_rank(current_user_score);
             fitness::rate_fittnes();
+            user::update_score(&current_user,current_user_score);
                }
         else if app_command.trim()=="6"{
             //---------------------------- 

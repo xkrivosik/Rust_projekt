@@ -1,5 +1,5 @@
 use std::fs::{File, OpenOptions};
-use std::io::{self, BufRead, Write};
+use std::io::{self, BufRead, BufReader, Write};
 
 pub fn register() -> String{
     let mut username = String::new();
@@ -214,3 +214,88 @@ fn decrypt(input: &str) -> String {
     }
     result
 }*/
+
+pub fn get_rank(score:i32) ->String{
+    if score>=50 && score<250{
+        return "Advanced Rater".to_string();
+    }
+    if score>=250 && score<500{
+        return "Pro Rater".to_string();
+    }
+    if score>=500{
+        return "Master Rater".to_string();
+    }
+    else{
+        return "Novice Rater".to_string();
+    }
+}
+/*Nefunguje */
+pub fn update_score(name: &str, score: i32) {
+    // Open the file in read/write mode
+    let file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open("src/user_info.txt");
+
+    // Handle errors opening the file
+    let file = match file {
+        Ok(file) => file,
+        Err(_) => {
+            eprintln!("Failed to open file.");
+            return;
+        }
+    };
+
+    // Create a buffered reader to read lines from the file
+    let reader = BufReader::new(&file);
+
+    // Create a vector to hold the updated lines
+    let mut updated_lines = Vec::new();
+
+    // Iterate over each line in the file
+    for line in reader.lines() {
+        let line = match line {
+            Ok(line) => line,
+            Err(_) => {
+                eprintln!("Failed to read line.");
+                return;
+            }
+        };
+
+        // Split the line into parts separated by ':'
+        let parts: Vec<&str> = line.split(':').collect();
+
+        // Check if the line corresponds to the user we're looking for
+        if let Some((user_score_str, rest)) = parts.split_last() {
+            if let Ok(user_score) = user_score_str.parse::<i32>() {
+                // If this is the user we're looking for, update the score
+                if parts.get(0) == Some(&name) {
+                    let updated_score = user_score + score;
+                    let updated_line = format!("{}:{}:{}", name, rest.join(":"), updated_score);
+                    updated_lines.push(updated_line);
+                    continue; // Skip writing the original line
+                }
+            }
+        }
+
+        // If the line doesn't correspond to the user we're looking for, add it unchanged to the vector
+        updated_lines.push(line);
+    }
+
+    // Reopen the file in write mode to clear its contents
+    let mut file = match OpenOptions::new().write(true).truncate(true).open("src/user_info.txt") {
+        Ok(file) => file,
+        Err(_) => {
+            eprintln!("Failed to open file for writing.");
+            return;
+        }
+    };
+
+    // Write the updated lines back to the file
+    for line in updated_lines {
+        if let Err(_) = writeln!(file, "{}", line) {
+            eprintln!("Failed to write line to file.");
+            return;
+        }
+    }
+}
