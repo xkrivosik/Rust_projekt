@@ -230,7 +230,7 @@ pub fn get_rank(score:i32) ->String{
     }
 }
 /*Nefunguje */
-pub fn update_score(name: &str, score: i32) {
+/*pub fn update_score(name: &str, score: i32) {
     // Open the file in read/write mode
     let file = OpenOptions::new()
         .read(true)
@@ -297,5 +297,61 @@ pub fn update_score(name: &str, score: i32) {
             eprintln!("Failed to write line to file.");
             return;
         }
+    }
+}*/
+struct User {
+    name: String,
+    pass: String,
+    score: i32,
+}
+
+pub fn score_update(username: String) {
+    // Create a vector to store user data
+    let mut users: Vec<User> = Vec::new();
+    println!("{}",username);
+    // Open the file for reading
+    if let Ok(file) = File::open("src/user_info.txt") {
+        let reader = BufReader::new(file);
+
+        // Iterate over lines in the file
+        for line in reader.lines() {
+            if let Ok(user_info) = line {
+                // Split the line by ':' delimiter
+                let parts: Vec<&str> = user_info.split(':').collect();
+                if parts.len() == 3 {
+                    // Parse user name, password, and score
+                    let name = parts[0].trim().to_string();
+                    let pass = parts[1].trim().to_string();
+                    let score: i32 = parts[2].trim().parse().unwrap_or(0);
+
+                    // Create a User instance and push it to the vector
+                    let user = User { name, score, pass };
+                    users.push(user);
+                }
+            }
+        }
+    } else {
+        println!("Failed to open the file.");
+        return;
+    }
+
+    // Find the user with the specified username
+    if let Some(user) = users.iter_mut().find(|u| u.name == username) {
+        user.score += 1;
+        println!("Score updated for user {}.", username);
+    } else {
+        println!("User {} not found.", username);
+        return;
+    }
+
+    // Open the file for writing
+    if let Ok(mut file) = OpenOptions::new().write(true).truncate(true).open("src/user_info.txt") {
+        // Write updated user information back to the file
+        for user in &users {
+            writeln!(file, "{}:{}:{}", user.name, user.pass, user.score).expect("Failed to write to file");
+        }
+       
+    } else {
+        println!("Failed to open the file for writing.");
     }
 }

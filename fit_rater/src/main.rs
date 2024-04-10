@@ -38,14 +38,16 @@ fn main() {
         }
     }
 
-    current_user_score = user::get_score(&current_user.trim());
-    current_user_rank = user::get_rank(current_user_score);
+   // current_user_score = user::get_score(&current_user.trim());
+   // current_user_rank = user::get_rank(current_user_score);
 
     //Command pre pohyb v appke
     let mut app_command = String::new();
 
     //Chcel by som tu dat moznost sa odhlasit namiesto exit ale neviem ako
     loop{
+        current_user_score = user::get_score(&current_user.trim());
+        current_user_rank = user::get_rank(current_user_score);
 //---------------------------- vymaze terminal je to prehladnejsie dal mi to chat nwm jak to funguje ale je to viac jak gui
             
                     let output = Command::new("cmd")
@@ -117,10 +119,10 @@ fn main() {
                               eprintln!("Failed to clear terminal");
                                      }
             //-------------------------------
-            current_user_score +=1;
-            current_user_rank = user::get_rank(current_user_score);
+            
+           // current_user_rank = user::get_rank(current_user_score);
             fitness::rate_fittnes();
-            user::update_score(&current_user,current_user_score);
+            user::score_update(current_user.trim().to_string().clone());
                }
         else if app_command.trim()=="6"{
             //---------------------------- 
