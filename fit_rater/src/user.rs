@@ -148,7 +148,7 @@ fn encrypt(input: &str) -> String {
             ' ' => ' ',
             _ => {
                 let unicode_value = ch as u32;
-                let new_unicode_value = unicode_value + match i {
+                let mut new_unicode_value = unicode_value + match i {
                     1 => 9,
                     2 => 6,
                     3 => 4,
@@ -166,6 +166,10 @@ fn encrypt(input: &str) -> String {
                     15 => 4,
                     _ => 1,
                 };
+                // Adjust the new unicode value if it results in ':'
+                if new_unicode_value == ':' as u32 {
+                    new_unicode_value += 1;
+                }
                 i += 1;
                 std::char::from_u32(new_unicode_value).unwrap()
             }
@@ -175,7 +179,8 @@ fn encrypt(input: &str) -> String {
     result
 }
 
-/*fn decrypt(input: &str) -> String {
+/*poriesil som tu dvojbodku v encrptovani ak pouzijeme aj toto budeme musiet to poriesit aj tu
+fn decrypt(input: &str) -> String {
     let mut result = String::new();
     let mut i = 0;
     for ch in input.chars() {

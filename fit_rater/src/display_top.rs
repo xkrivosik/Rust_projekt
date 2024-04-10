@@ -61,8 +61,7 @@ pub fn top_rates() {
             }
         }
 
-        // Print the sorted vector
-        println!("Sorted by value in descending order:");
+        // Print the sorted vector;
         for (index, person) in people.iter().take(5).enumerate() {
             println!("{}. {} : {}", index + 1, person.name, person.value);
         }

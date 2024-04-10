@@ -1,12 +1,10 @@
-//use std::fs::OpenOptions;
-//use std::io::{self, Write};
 use std::io;
 use std::process::Command;
 mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO poriesit : v hesle(encrypt), inspect mozno komentare, nejaky rank system by mohol byt. 
+/*TODO poriesit : v hesle(decrypt), testing treba poriadny error handleing na rate a add, inspect, mozno komentare, nejaky rank system by mohol byt. 
 odstranenie zbitocnych lineov,maybee gui?? */
 
 fn main() {
@@ -80,11 +78,11 @@ fn main() {
                               eprintln!("Failed to clear terminal");
                                      }
             //-------------------------------
-            println!("Name: {}\nScore: {}",current_user, current_user_score);
+            println!("Name: {}Score: {}",current_user, current_user_score);
             let mut back = String::new();
 
             loop {
-                println!("Press 'e' to go back");
+                println!("\nPress 'e' to go back");
                 back.clear();
                 io::stdin().read_line(&mut back).expect("Failed to read command.");
         
@@ -94,6 +92,16 @@ fn main() {
                 else if back.trim()=="e"{
                     break;
                 }
+
+                let output = Command::new("cmd")
+                         .args(&["/C", "cls"])
+                         .status()
+                         .expect("Failed to clear terminal");
+
+                         if !output.success() {
+                              eprintln!("Failed to clear terminal");
+                                     }
+                println!("Name: {}Score: {}",current_user, current_user_score);
             }
         }
         else if app_command.trim()=="2"{
@@ -107,7 +115,6 @@ fn main() {
                               eprintln!("Failed to clear terminal");
                                      }
             //-------------------------------
-            println!("Rating tu (zatial iba da +1 do skore pre testovanie)");
             current_user_score +=1;
             fitness::rate_fittnes();
                }
@@ -118,9 +125,9 @@ fn main() {
                          .status()
                          .expect("Failed to clear terminal");
 
-                         if !output.success() {
+                        if !output.success() {
                               eprintln!("Failed to clear terminal");
-                                     }
+                        }
             //-------------------------------
             display_top::top_rates();
             let mut back = String::new();
@@ -136,6 +143,16 @@ fn main() {
                 else if back.trim()=="e"{
                     break;
                 }
+
+                let output = Command::new("cmd")
+                         .args(&["/C", "cls"])
+                         .status()
+                         .expect("Failed to clear terminal");
+
+                        if !output.success() {
+                              eprintln!("Failed to clear terminal");
+                        }
+                display_top::top_rates();
             }
         }
         else if app_command.trim()=="4"{
@@ -145,11 +162,10 @@ fn main() {
                          .status()
                          .expect("Failed to clear terminal");
 
-                         if !output.success() {
+                        if !output.success() {
                               eprintln!("Failed to clear terminal");
-                                     }
+                        }
             //-------------------------------
-            println!("Best centra tu");
             display_top::top_fitness();
             let mut back = String::new();
 
@@ -164,6 +180,16 @@ fn main() {
                 else if back.trim()=="e"{
                     break;
                 }
+
+                let output = Command::new("cmd")
+                         .args(&["/C", "cls"])
+                         .status()
+                         .expect("Failed to clear terminal");
+
+                        if !output.success() {
+                              eprintln!("Failed to clear terminal");
+                        }
+                display_top::top_fitness();
             }
             
         }
@@ -178,7 +204,6 @@ fn main() {
                               eprintln!("Failed to clear terminal");
                                      }
             //-------------------------------
-            println!("Adding tu");
             fitness::add_fit();
             let mut back = String::new();
 
@@ -221,6 +246,16 @@ fn main() {
                 else if back.trim()=="e"{
                     break;
                 }
+
+                let output = Command::new("cmd")
+                         .args(&["/C", "cls"])
+                         .status()
+                         .expect("Failed to clear terminal");
+
+                        if !output.success() {
+                              eprintln!("Failed to clear terminal");
+                        }
+                fitness::display_fitness();
             }
             
         }
