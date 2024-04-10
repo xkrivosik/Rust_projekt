@@ -1,6 +1,6 @@
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, Write};
-
+use std::process::Command;
 use std::path::Path;
 // Define a struct to represent fitness center information
 #[derive(Debug)]
@@ -378,8 +378,15 @@ pub fn inspect() {
             continue;
         }
 
-        let selected_fitness = &fitness_centers[index];
+        let output = Command::new("cmd")
+                         .args(&["/C", "cls"])
+                         .status()
+                         .expect("Failed to clear terminal");
 
+                         if !output.success() {
+                              eprintln!("Failed to clear terminal");
+                                     }
+        let selected_fitness = &fitness_centers[index];
         println!(
             "       -------------------------------------------------
             | Name: {}           Day price: {}€    
@@ -393,23 +400,28 @@ pub fn inspect() {
             selected_fitness.year_price
         );
         println!("       -------------------------------------------------");
+        break;
 
-        println!("Enter a comment or type 'e' to exit:");
-        let mut comment = String::new();
-        io::stdin()
-            .read_line(&mut comment)
-            .expect("Failed to read input");
+    }
+    println!("Enter a comment or type 'e' to exit:");
+    loop{
+    
+    let mut comment = String::new();
+    io::stdin()
+        .read_line(&mut comment)
+        .expect("Failed to read input");
 
-        let comment = comment.trim();
+    let comment = comment.trim();
 
-        if comment == "e" {
-            return;
-        }
-        else{
-            //to do comment insert a save do filu 
-            //dal by som ze pri inspect ti vypise komenty aj s menom to staci len aby sa do tejto funkcie posielal curentuser
-            //nemam tusenie ako to savnut a inspektnut asi novy txt file a podla indexu
-            return;
-        }
+    if comment == "e" {
+        break;
+    }
+    else{
+        //to do comment insert a save do filu 
+        //dal by som ze pri inspect ti vypise komenty aj s menom to staci len aby sa do tejto funkcie posielal curentuser
+        //nemam tusenie ako to savnut a inspektnut asi novy txt file a podla indexu
+        
+    }
     }
 }
+
