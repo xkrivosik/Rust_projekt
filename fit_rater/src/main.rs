@@ -4,7 +4,7 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO poriesit : v hesle(decrypt), mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), nejaky rank system by mohol byt. 
+/*TODO poriesit : login, register moznost ist back, error handleing na rate, mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), 
 odstranenie zbitocnych lineov,maybee gui??(jebe))(mne??? nieeee) */
 
 fn main() {
@@ -15,10 +15,9 @@ fn main() {
     let mut current_user_rank:String;
 
     loop {
-        println!("1: Login\n2: Register\n3: Exit");
+        println!("1: Login\n2: Register\n3: Exit\n\nEnter command: ");
         step.clear();
         io::stdin().read_line(&mut step).expect("Failed to read command.");
-
         if step.trim().is_empty(){
             println!("Failed to read input.");
         }
@@ -26,10 +25,26 @@ fn main() {
             return;
         }
         else if step.trim()=="2"{
+            let output = Command::new("cmd")
+                    .args(&["/C", "cls"])
+                    .status()
+                    .expect("Failed to clear terminal");
+
+                    if !output.success() {
+                        eprintln!("Failed to clear terminal");
+                    }
             current_user = user::register();
             break;
         }
         else if step.trim()=="1"{
+            let output = Command::new("cmd")
+                    .args(&["/C", "cls"])
+                    .status()
+                    .expect("Failed to clear terminal");
+
+                    if !output.success() {
+                        eprintln!("Failed to clear terminal");
+                    }
             current_user = user::login();
             break;
         }
@@ -64,6 +79,7 @@ fn main() {
         3: Inspect fitness          4: Display best fitness centres
         5: Add a fitness centre     6: Diplay best Raters
         7: Exit");
+        println!("Enter command:");
         
         app_command.clear();
         io::stdin().read_line(&mut app_command).expect("Failed to read command.");
@@ -245,7 +261,7 @@ fn main() {
             return;
         }
         else {
-            println!("Invalid input!");
+            println!(" ");
         }
     }
     

@@ -1,5 +1,6 @@
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, BufReader, Write};
+use std::process::{exit, Command};
 
 pub fn register() -> String{
     let mut username = String::new();
@@ -7,22 +8,47 @@ pub fn register() -> String{
 
     loop {
         //Input meno
-        println!("Enter name:");
+        println!("To exit type 'exit' into the name or password\nEnter name:");
         username.clear();
         io::stdin().read_line(&mut username).expect("Failed to read username");
+
+        if username == "exit"{
+            //toto nefunguje je to tu 4 krat 
+            exit(0);
+        }
 
         //Input heslo
         println!("Enter password:");
         password.clear();
         io::stdin().read_line(&mut password).expect("Failed to read password");
 
+        if password == "exit"{
+            exit(0);
+        }
+
         //Ak meno alebo heslo je prazdne vrati error a skusis zas
         if username.trim().is_empty()||password.trim().is_empty(){
+            let output = Command::new("cmd")
+                    .args(&["/C", "cls"])
+                    .status()
+                    .expect("Failed to clear terminal");
+
+                    if !output.success() {
+                        eprintln!("Failed to clear terminal");
+                    }
             println!("Name or password cannot be empty!");
         }
         else{
             // Ak meno už existuje vyhodí error
             if username_exists(username.trim()) {
+                let output = Command::new("cmd")
+                    .args(&["/C", "cls"])
+                    .status()
+                    .expect("Failed to clear terminal");
+
+                    if !output.success() {
+                        eprintln!("Failed to clear terminal");
+                    }
                 println!("Account with this username already exists.");
             } 
             else {
@@ -53,17 +79,32 @@ pub fn login() -> String{
     
     loop {
         //Input meno
-        println!("Enter name:");
+        println!("To exit type 'exit' into the name or password\nEnter name:");
         username.clear();
         io::stdin().read_line(&mut username).expect("Failed to read username");
 
+        if username == "exit"{
+            exit(0);
+        }
         //Input heslo
         println!("Enter password:");
         password.clear();
         io::stdin().read_line(&mut password).expect("Failed to read password");
 
+        if password == "exit"{
+            exit(0);
+        }
+
         //Ak meno alebo heslo je prazdne vrati error a skusis zas
         if username.trim().is_empty()||password.trim().is_empty(){
+            let output = Command::new("cmd")
+                    .args(&["/C", "cls"])
+                    .status()
+                    .expect("Failed to clear terminal");
+
+                    if !output.success() {
+                        eprintln!("Failed to clear terminal");
+                    }
             println!("Name or password cannot be empty!");
         }
         else {
@@ -74,6 +115,14 @@ pub fn login() -> String{
                 return username;
             } 
             else {
+                let output = Command::new("cmd")
+                    .args(&["/C", "cls"])
+                    .status()
+                    .expect("Failed to clear terminal");
+
+                    if !output.success() {
+                        eprintln!("Failed to clear terminal");
+                    }
                 println!("Incorrect username or password.");
             }
         }
@@ -179,42 +228,6 @@ fn encrypt(input: &str) -> String {
     result
 }
 
-/*poriesil som tu dvojbodku v encrptovani ak pouzijeme aj toto budeme musiet to poriesit aj tu
-fn decrypt(input: &str) -> String {
-    let mut result = String::new();
-    let mut i = 0;
-    for ch in input.chars() {
-        let new_char = match ch {
-            ' ' => ' ',
-            _ => {
-                let unicode_value = ch as u32;
-                let new_unicode_value = unicode_value - match i {
-                    1 => 9,
-                    2 => 6,
-                    3 => 4,
-                    4 => 7,
-                    5 => 5,
-                    6 => 13,
-                    7 => 2,
-                    8 => 11,
-                    9 => 3,
-                    10 => 15,
-                    11 => 3,
-                    12 => 14,
-                    13 => 9,
-                    14 => 12,
-                    15 => 4,
-                    _ => 1,
-                };
-                i += 1;
-                std::char::from_u32(new_unicode_value).unwrap()
-            }
-        };
-        result.push(new_char);
-    }
-    result
-}*/
-
 pub fn get_rank(score:i32) ->String{
     if score>=50 && score<250{
         return "Advanced Rater".to_string();
@@ -229,76 +242,6 @@ pub fn get_rank(score:i32) ->String{
         return "Novice Rater".to_string();
     }
 }
-/*Nefunguje */
-/*pub fn update_score(name: &str, score: i32) {
-    // Open the file in read/write mode
-    let file = OpenOptions::new()
-        .read(true)
-        .write(true)
-        .open("src/user_info.txt");
-
-    // Handle errors opening the file
-    let file = match file {
-        Ok(file) => file,
-        Err(_) => {
-            eprintln!("Failed to open file.");
-            return;
-        }
-    };
-
-    // Create a buffered reader to read lines from the file
-    let reader = BufReader::new(&file);
-
-    // Create a vector to hold the updated lines
-    let mut updated_lines = Vec::new();
-
-    // Iterate over each line in the file
-    for line in reader.lines() {
-        let line = match line {
-            Ok(line) => line,
-            Err(_) => {
-                eprintln!("Failed to read line.");
-                return;
-            }
-        };
-
-        // Split the line into parts separated by ':'
-        let parts: Vec<&str> = line.split(':').collect();
-
-        // Check if the line corresponds to the user we're looking for
-        if let Some((user_score_str, rest)) = parts.split_last() {
-            if let Ok(user_score) = user_score_str.parse::<i32>() {
-                // If this is the user we're looking for, update the score
-                if parts.get(0) == Some(&name) {
-                    let updated_score = user_score + score;
-                    let updated_line = format!("{}:{}:{}", name, rest.join(":"), updated_score);
-                    updated_lines.push(updated_line);
-                    continue; // Skip writing the original line
-                }
-            }
-        }
-
-        // If the line doesn't correspond to the user we're looking for, add it unchanged to the vector
-        updated_lines.push(line);
-    }
-
-    // Reopen the file in write mode to clear its contents
-    let mut file = match OpenOptions::new().write(true).truncate(true).open("src/user_info.txt") {
-        Ok(file) => file,
-        Err(_) => {
-            eprintln!("Failed to open file for writing.");
-            return;
-        }
-    };
-
-    // Write the updated lines back to the file
-    for line in updated_lines {
-        if let Err(_) = writeln!(file, "{}", line) {
-            eprintln!("Failed to write line to file.");
-            return;
-        }
-    }
-}*/
 struct User {
     name: String,
     pass: String,
