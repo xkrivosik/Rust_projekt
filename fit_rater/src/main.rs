@@ -4,7 +4,7 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO poriesit : login, register moznost ist back, error handleing na rate, mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), 
+/*TODO poriesit : error handleing na rate, mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), 
 odstranenie zbitocnych lineov,maybee gui??(jebe))(mne??? nieeee) */
 
 fn main() {

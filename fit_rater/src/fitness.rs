@@ -406,22 +406,22 @@ pub fn inspect() {
     println!("Enter a comment or type 'e' to exit:");
     loop{
     
-    let mut comment = String::new();
-    io::stdin()
-        .read_line(&mut comment)
-        .expect("Failed to read input");
+        let mut comment = String::new();
+        io::stdin()
+            .read_line(&mut comment)
+            .expect("Failed to read input");
 
-    let comment = comment.trim();
+        let comment = comment.trim();
 
-    if comment == "e" {
-        break;
-    }
-    else{
-        //to do comment insert a save do filu 
-        //dal by som ze pri inspect ti vypise komenty aj s menom to staci len aby sa do tejto funkcie posielal curentuser
-        //nemam tusenie ako to savnut a inspektnut asi novy txt file a podla indexu
-        
-    }
+        if comment == "e" {
+            break;
+        }
+        else{
+            //to do comment insert a save do filu 
+            //dal by som ze pri inspect ti vypise komenty aj s menom to staci len aby sa do tejto funkcie posielal curentuser
+            //nemam tusenie ako to savnut a inspektnut asi novy txt file a podla indexu
+            
+        }
     }
 }
 

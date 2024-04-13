@@ -8,12 +8,11 @@ pub fn register() -> String{
 
     loop {
         //Input meno
-        println!("To exit type 'exit' into the name or password\nEnter name:");
+        println!("To exit type 'e' into the name\nEnter name:");
         username.clear();
         io::stdin().read_line(&mut username).expect("Failed to read username");
 
-        if username == "exit"{
-            //toto nefunguje je to tu 4 krat 
+        if username.trim() == "e"{
             exit(0);
         }
 
@@ -21,10 +20,6 @@ pub fn register() -> String{
         println!("Enter password:");
         password.clear();
         io::stdin().read_line(&mut password).expect("Failed to read password");
-
-        if password == "exit"{
-            exit(0);
-        }
 
         //Ak meno alebo heslo je prazdne vrati error a skusis zas
         if username.trim().is_empty()||password.trim().is_empty(){
@@ -49,7 +44,7 @@ pub fn register() -> String{
                     if !output.success() {
                         eprintln!("Failed to clear terminal");
                     }
-                println!("Account with this username already exists.");
+                println!("Account with username '{}' already exists.",username.trim());
             } 
             else {
                 break;
@@ -79,21 +74,17 @@ pub fn login() -> String{
     
     loop {
         //Input meno
-        println!("To exit type 'exit' into the name or password\nEnter name:");
+        println!("To exit type 'e' into the name\nEnter name:");
         username.clear();
         io::stdin().read_line(&mut username).expect("Failed to read username");
 
-        if username == "exit"{
+        if username.trim() == "e"{
             exit(0);
         }
         //Input heslo
         println!("Enter password:");
         password.clear();
         io::stdin().read_line(&mut password).expect("Failed to read password");
-
-        if password == "exit"{
-            exit(0);
-        }
 
         //Ak meno alebo heslo je prazdne vrati error a skusis zas
         if username.trim().is_empty()||password.trim().is_empty(){
