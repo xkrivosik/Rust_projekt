@@ -4,7 +4,10 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO poriesit : tie stranky na inspect a rate nech je to na viacej stran(mozno podla mesta/abecedy/ratingu) error handleing na rate(teraz je to tak ze ked zadas zle id tak ta to vykopne, asi by som to tak nechal), mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), 
+/*TODO poriesit : tie stranky na inspect a rate nech je to na viacej stran(mozno podla mesta/abecedy/ratingu)
+(v inspecte teraz sa to da po 10 prechadzat ten list ale su tam este chyby a neda sa zadat id ktore chces inspectnut),
+error handleing na rate(teraz je to tak ze ked zadas zle id tak ta to vykopne, asi by som to tak nechal),
+mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), 
 odstranenie zbitocnych lineov,maybee gui??(jebe))(mne??? nieeee) */
 
 fn main() {

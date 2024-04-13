@@ -147,6 +147,7 @@ where
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
 }
+
 pub fn rate_fittnes(){
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
 
@@ -315,26 +316,20 @@ pub fn rate_fittnes(){
 }
 
 pub fn inspect() {
-
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
 
     if let Ok(lines) = read_lines("src/fittnes_info.txt") {
-        
         for line in lines {
             if let Ok(ip) = line {
-               
                 let parts: Vec<&str> = ip.split(':').collect();
 
-                
                 if parts.len() == 12 {
-               
                     let name = parts[0].to_string();
                     let location = parts[1].to_string();
                     let day_price = parts[2].parse().unwrap_or(0);
                     let month_price = parts[3].parse().unwrap_or(0);
                     let year_price = parts[4].parse().unwrap_or(0);
 
-                  
                     let fitness_center = FitnessCenter {
                         name,
                         location,
@@ -355,80 +350,68 @@ pub fn inspect() {
         }
     }
 
-    display_fitness();
+    let mut index = 0;
+    let mut display_index = 0;
+    let mut _exit = false;
 
     loop {
-    
-        println!("Enter the ID of the fitness center you want to inspect:");
+        let output = Command::new("cmd")
+            .args(&["/C", "cls"])
+            .status()
+            .expect("Failed to clear terminal");
+
+        if !output.success() {
+            eprintln!("Failed to clear terminal");
+        }
+        display_fitnessi(&fitness_centers, display_index);
+
+        println!("Enter the ID of the fitness center you want to inspect:\n'n' -> next page\n'p' -> previous page");
         let mut input_id = String::new();
         io::stdin()
             .read_line(&mut input_id)
             .expect("Failed to read input");
 
-       
         let input_id = input_id.trim();
 
-        if input_id.is_empty() {
-            continue;
-        }
-
-        let index: usize = match input_id.parse() {
-            Ok(index) => index,
-            Err(_) => {
-                println!("Invalid ID!");
-                continue;
-            }
-        };
-
-        if index >= fitness_centers.len() {
-            println!("Invalid ID!");
-            continue;
-        }
-
-        let output = Command::new("cmd")
-                         .args(&["/C", "cls"])
-                         .status()
-                         .expect("Failed to clear terminal");
-
-                         if !output.success() {
-                              eprintln!("Failed to clear terminal");
-                                     }
-        let selected_fitness = &fitness_centers[index];
-        println!(
-            "       -------------------------------------------------
-            | Name: {}           Day price: {}€    
-            | Location: {}       Month price: {}€     
-            | ID: {}              Year price: {}€",
-            selected_fitness.name,
-            selected_fitness.day_price,
-            selected_fitness.location,
-            selected_fitness.month_price,
-            index,
-            selected_fitness.year_price
-        );
-        println!("       -------------------------------------------------");
-        break;
-
-    }
-    println!("Enter a comment or type 'e' to exit:");
-    loop{
-    
-        let mut comment = String::new();
-        io::stdin()
-            .read_line(&mut comment)
-            .expect("Failed to read input");
-
-        let comment = comment.trim();
-
-        if comment == "e" {
+        if input_id == "e" {
             break;
         }
-        else{
-            //to do comment insert a save do filu 
-            //dal by som ze pri inspect ti vypise komenty aj s menom to staci len aby sa do tejto funkcie posielal curentuser
-            //nemam tusenie ako to savnut a inspektnut asi novy txt file a podla indexu
-            
+        //tu je ked das p da predtym n je nasledujuca
+        match input_id {
+            "p" => {
+                if display_index > 0 {
+                    display_index -= 10;
+                }
+            }
+            "n" => {
+                if display_index < fitness_centers.len() - 1 {
+                    display_index += 10; // Move by five
+                    if display_index >= fitness_centers.len() {
+                        display_index = fitness_centers.len() - 1;
+                    }
+                }
+            }
+            _ => {
+                if let Ok(parsed_index) = input_id.parse::<usize>() {
+                    if parsed_index < fitness_centers.len() {
+                        index = parsed_index;
+                        display_index = index;
+                    } else {
+                        println!("Invalid ID!");
+                    }
+                } else {
+                    println!("Invalid input!");
+                }
+            }
         }
+    }
+}
+fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
+    const PAGE_SIZE: usize = 10;
+
+    println!("Fitness Centers:");
+    for (i, fitness_center) in fitness_centers.iter().enumerate().skip(start_index).take(PAGE_SIZE) {
+        println!("ID: {} - Name: {}", i, fitness_center.name);
     }
 }
 

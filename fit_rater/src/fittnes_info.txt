@@ -6,3 +6,27 @@ Spartacus:Trnava:8:50:300:3.28:7:8:6:5:6:2
 fiit:Bratislava:1:15:150:1.78:5:0:1:0:3:1
 tosova garaž:trnava:1:0:0:1.91:17:21:18:21:21:10
 Moja Posilka:To by si scel vedzet co:50:0:4:0:0:0:0:0:0:0
+Andyho rit:U Andyho:1:15:12:3.37:11:11:11:8:6:3
+fitup:Trnava:5:36:159:3.85:14:18:8:7:9:3
+Hamilton:Bratislava:9:58:235:2.00:5:5:1:1:1:1
+365:Trnava:5:40:169:3.39:10:6:7:5:3:2
+Spartacus:Trnava:8:50:300:3.28:7:8:6:5:6:2
+fiit:Bratislava:1:15:150:1.78:5:0:1:0:3:1
+tosova garaž:trnava:1:0:0:1.91:17:21:18:21:21:10
+Moja Posilka:To by si scel vedzet co:50:0:4:0:0:0:0:0:0:0
+Andyho rit:U Andyho:1:15:12:3.37:11:11:11:8:6:3
+fitup:Trnava:5:36:159:3.85:14:18:8:7:9:3
+Hamilton:Bratislava:9:58:235:2.00:5:5:1:1:1:1
+365:Trnava:5:40:169:3.39:10:6:7:5:3:2
+Spartacus:Trnava:8:50:300:3.28:7:8:6:5:6:2
+fiit:Bratislava:1:15:150:1.78:5:0:1:0:3:1
+tosova garaž:trnava:1:0:0:1.91:17:21:18:21:21:10
+Moja Posilka:To by si scel vedzet co:50:0:4:0:0:0:0:0:0:0
+Andyho rit:U Andyho:1:15:12:3.37:11:11:11:8:6:3
+fitup:Trnava:5:36:159:3.85:14:18:8:7:9:3
+Hamilton:Bratislava:9:58:235:2.00:5:5:1:1:1:1
+365:Trnava:5:40:169:3.39:10:6:7:5:3:2
+Spartacus:Trnava:8:50:300:3.28:7:8:6:5:6:2
+fiit:Bratislava:1:15:150:1.78:5:0:1:0:3:1
+tosova garaž:trnava:1:0:0:1.91:17:21:18:21:21:10
+Moja Posilka:To by si scel vedzet co:50:0:4:0:0:0:0:0:0:0
