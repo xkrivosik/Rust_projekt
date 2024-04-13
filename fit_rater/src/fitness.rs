@@ -78,6 +78,7 @@ pub fn add_fit(){
     
 
 }
+
 pub fn display_fitness() {
     // Initialize an empty vector to store fitness center information
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
@@ -139,7 +140,6 @@ pub fn display_fitness() {
     println!("       -------------------------------------------------");
 }
 
-// Function to read lines from a file
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
@@ -198,7 +198,14 @@ pub fn rate_fittnes(){
     println!("Enter the ID of the fitness center you want to rate:");
     let mut selected_id = String::new();
     io::stdin().read_line(&mut selected_id).expect("Failed to read input");
-    let selected_id: usize = selected_id.trim().parse().expect("Invalid ID");
+
+    let selected_id: usize = match selected_id.trim().parse() {
+        Ok(num) => num,
+        Err(_) => {
+            println!("Invalid ID!");
+            return;
+        }
+    };
 
     if selected_id >= fitness_centers.len() {
         println!("Invalid ID!");
