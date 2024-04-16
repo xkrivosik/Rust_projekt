@@ -6,9 +6,9 @@ mod fitness;
 
 /*TODO poriesit : tie stranky na inspect a rate nech je to na viacej stran(mozno podla mesta/abecedy/ratingu)
 (v inspecte teraz sa to da po 10 prechadzat ten list ale su tam este chyby a neda sa zadat id ktore chces inspectnut),
-error handleing na rate(teraz je to tak ze ked zadas zle id tak ta to vykopne, asi by som to tak nechal),
-mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto), 
-odstranenie zbitocnych lineov,maybee gui??(jebe))(mne??? nieeee) */
+error handleing na rate(teraz je to tak ze ked zadas zle id tak ta to vykopne, asi by som to tak nechal(sure)),
+mozno komentare(vo fitness.rs na konci jak je inspect je na to miesto(idem na to teraz)), 
+odstranenie zbitocnych lineov,maybee gui??(jebe)(<-stale plati))(mne??? nieeee) */
 
 fn main() {
     //Command na vstup do appky
@@ -257,7 +257,7 @@ fn main() {
                               eprintln!("Failed to clear terminal");
                                      }
             //-------------------------------
-            fitness::inspect();
+            fitness::inspection(&current_user);
             
         }
         else if app_command.trim()=="7"{

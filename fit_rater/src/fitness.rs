@@ -1,5 +1,6 @@
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, Write};
+use std::ops::Index;
 use std::process::Command;
 use std::path::Path;
 // Define a struct to represent fitness center information
@@ -195,23 +196,7 @@ pub fn rate_fittnes(){
         }
     }
     
-    display_fitness();
-    println!("Enter the ID of the fitness center you want to rate:");
-    let mut selected_id = String::new();
-    io::stdin().read_line(&mut selected_id).expect("Failed to read input");
-
-    let selected_id: usize = match selected_id.trim().parse() {
-        Ok(num) => num,
-        Err(_) => {
-            println!("Invalid ID!");
-            return;
-        }
-    };
-
-    if selected_id >= fitness_centers.len() {
-        println!("Invalid ID!");
-        return;
-    }
+    let mut selected_id= inspect() as usize;
 
     let selected_center = &mut fitness_centers[selected_id];
 
@@ -315,7 +300,7 @@ pub fn rate_fittnes(){
     }
 }
 
-pub fn inspect() {
+pub fn inspect()->usize {
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
 
     if let Ok(lines) = read_lines("src/fittnes_info.txt") {
@@ -376,19 +361,21 @@ pub fn inspect() {
         if input_id == "e" {
             break;
         }
-        //tu je ked das p da predtym n je nasledujuca
+
         match input_id {
             "p" => {
-                if display_index > 0 {
+                if display_index >= 10 {
                     display_index -= 10;
+                } else {
+                    println!("You're already at the first page.");
                 }
             }
             "n" => {
-                if display_index < fitness_centers.len() - 1 {
-                    display_index += 10; // Move by five
-                    if display_index >= fitness_centers.len() {
-                        display_index = fitness_centers.len() - 1;
-                    }
+                if display_index < fitness_centers.len() - 10 {
+                    display_index += 10;
+                } else {
+                    let remaining = fitness_centers.len() - display_index - 1;
+                    println!("You're already at the last page with {} records.", remaining);
                 }
             }
             _ => {
@@ -399,12 +386,16 @@ pub fn inspect() {
                     } else {
                         println!("Invalid ID!");
                     }
+                    
+                    break;
                 } else {
                     println!("Invalid input!");
                 }
             }
         }
     }
+    return display_index  ;
+
 }
 fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
     const PAGE_SIZE: usize = 10;
@@ -414,4 +405,144 @@ fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
         println!("ID: {} - Name: {}", i, fitness_center.name);
     }
 }
+pub fn inspection(username:&String) {
+    // Initialize an empty vector to store fitness center information
+    let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
+    
+    // Open the file for reading
+    if let Ok(lines) = read_lines("src/fittnes_info.txt") {
+        // Iterate over lines
+        for line in lines {
+            if let Ok(ip) = line {
+                // Split the line by ':' delimiter
+                let parts: Vec<&str> = ip.split(':').collect();
 
+                // Ensure we have enough parts to create a FitnessCenter struct
+                if parts.len() == 12 {
+                    // Parse the parts into appropriate types
+                    let name = parts[0].to_string();
+                    let location = parts[1].to_string();
+                    let day_price = parts[2].parse().unwrap_or(0);
+                    let month_price = parts[3].parse().unwrap_or(0);
+                    let year_price = parts[4].parse().unwrap_or(0);
+                    let score = parts[5].parse().unwrap_or(0.0);
+                    let clean = 0;
+                    let personal = 0;
+                    let equip = 0;
+                    let whole = 0;
+                    let service = 0;
+                    let raaters = 0;
+
+                    // Create a FitnessCenter instance and push it to the vector
+                    fitness_centers.push(FitnessCenter {
+                        name,
+                        location,
+                        day_price,
+                        month_price,
+                        year_price,
+                        score,
+                        clean,
+                        personal,
+                        equip,
+                        whole,
+                        service,
+                        raaters,
+                    });
+                }
+            }
+        }
+    }
+    let  index=inspect();
+    let mut back = String::new();
+    loop {
+        let output = Command::new("cmd")
+                 .args(&["/C", "cls"])
+                 .status()
+                 .expect("Failed to clear terminal");
+
+                 if !output.success() {
+                      eprintln!("Failed to clear terminal");
+                             }
+        if index < fitness_centers.len() {
+                println!("-------------------------------------------------");
+                println!("| ID: {}  Name: {}  Location: {}", index, fitness_centers[index].name, fitness_centers[index].location);
+                println!("-------------------------------------------------");
+        } else {
+                println!("Index out of bounds!");
+                }
+                display_coment(index);
+                
+        println!("\nPress 'e' to go back or 'c' to comment fitness center");
+        back.clear();
+        io::stdin().read_line(&mut back).expect("Failed to read command.");
+
+        
+        if back.trim()=="e"{
+        break;
+        }
+        else if back.trim()=="c"{
+            comment(username,index);
+        }
+        
+    }
+    
+    // Check if the index is within bounds
+ 
+}
+ fn comment(username:&String,index:usize){
+    println!("Coment:");
+    let mut coment= String::new();
+    coment.clear();
+    io::stdin().read_line(&mut coment).expect("Failed to comment.");
+    let mut file = OpenOptions::new()
+    .create(true)
+    .append(true)
+    .open("src/comment.txt")
+    .expect("Failed to open file");
+
+//Ulozenie do fileu
+writeln!(file, "{}|{}:{}", index, username.trim(), coment.trim())
+    .expect("Failed to write to file");
+println!("comment added");
+
+ }
+ struct ComentLog {
+    id: usize,
+    comment: String,
+}
+
+fn display_coment(index: usize) {
+    let mut comments: Vec<ComentLog> = Vec::new();
+
+    // Open the file for reading
+    if let Ok(lines) = read_lines("src/comment.txt") {
+        // Iterate over lines
+        for line in lines {
+            if let Ok(ip) = line {
+                // Split the line by '|' delimiter
+                let parts: Vec<&str> = ip.split('|').collect();
+
+                // Ensure we have enough parts to create a ComentLog struct
+                if parts.len() == 2 {
+                    // Parse the parts into appropriate types
+                    let id = parts[0].parse::<usize>().unwrap_or(0);
+                    let comment = parts[1].to_string();
+
+                    // Create a ComentLog instance and push it to the vector
+                    comments.push(ComentLog {
+                        id,
+                        comment,
+                    });
+                }
+            }
+        }
+    }
+
+    // Iterate through comments vector and print comment if id matches index
+    for comment in &comments {
+        if comment.id == index {
+            println!("{}", comment.comment);
+        }
+    }
+   
+}
