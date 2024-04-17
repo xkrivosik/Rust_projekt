@@ -225,7 +225,7 @@ pub fn rate_fittnes(){
     }
 }
 
-pub fn inspect()->usize {
+pub fn inspect() -> usize {
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
 
     if let Ok(lines) = read_lines("src/fittnes_info.txt") {
@@ -260,9 +260,7 @@ pub fn inspect()->usize {
         }
     }
 
-    let index;
     let mut display_index = 0;
-    let mut _exit = false;
 
     loop {
         let output = Command::new("cmd")
@@ -296,7 +294,7 @@ pub fn inspect()->usize {
                 }
             }
             "n" => {
-                if display_index < fitness_centers.len() - 10 {
+                if display_index + 10 < fitness_centers.len() {
                     display_index += 10;
                 } else {
                     let remaining = fitness_centers.len() - display_index - 1;
@@ -306,8 +304,7 @@ pub fn inspect()->usize {
             _ => {
                 if let Ok(parsed_index) = input_id.parse::<usize>() {
                     if parsed_index < fitness_centers.len() {
-                        index = parsed_index;
-                        display_index = index;
+                        display_index = parsed_index;
                     } else {
                         println!("Invalid ID!");
                     }
@@ -319,10 +316,8 @@ pub fn inspect()->usize {
             }
         }
     }
-    return display_index  ;
-
+    display_index
 }
-
 fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
     const PAGE_SIZE: usize = 10;
 
@@ -352,7 +347,7 @@ pub fn inspection(username:&String) {
                     let equip = 0;
                     let whole = 0;
                     let service = 0;
-                    let raaters = 0;
+                    let raaters = parts[11].parse().unwrap_or(0);
 
                     fitness_centers.push(FitnessCenter {
                         name,
@@ -384,10 +379,15 @@ pub fn inspection(username:&String) {
                       eprintln!("Failed to clear terminal");
                              }
         if index < fitness_centers.len() {
-                println!("-------------------------------------------------");
-                println!("| ID: {}  Name: {}  Location: {}", index, fitness_centers[index].name, fitness_centers[index].location);
-                println!("| Rating: {}/5({})",fitness_centers[index].score,fitness_centers[index].raaters);
-                println!("-------------------------------------------------");
+                println!("------------------------");
+                println!("| ID: {}  Name: {}", index, fitness_centers[index].name);
+                println!("| Location: {}",fitness_centers[index].location);
+                println!("| Rating: {}/5 ({})",fitness_centers[index].score,fitness_centers[index].raaters);
+                println!("| One-time entry: {}€",fitness_centers[index].day_price);
+                println!("| Monthly subscription: {}€",fitness_centers[index].month_price);
+                println!("| Yearly subscription: {}€",fitness_centers[index].year_price);
+                println!("------------------------");
+                println!("Comment section:")
         } else {
                 println!("Index out of bounds!");
                 }
