@@ -124,9 +124,12 @@ pub fn rate_fittnes(){
         }
     }
     
-    let selected_id= inspect() as usize;
+    let selected_id= inspect() as i32;
+    if selected_id==-1 {
+        return;
+    }
 
-    let selected_center = &mut fitness_centers[selected_id];
+    let selected_center = &mut fitness_centers[selected_id as usize];
 
     loop {
         println!("Enter ratings (0-5) for the following aspects:");
@@ -225,7 +228,7 @@ pub fn rate_fittnes(){
     }
 }
 
-pub fn inspect() -> usize {
+pub fn inspect() -> i32 {
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
 
     if let Ok(lines) = read_lines("src/fittnes_info.txt") {
@@ -273,7 +276,7 @@ pub fn inspect() -> usize {
         }
         display_fitnessi(&fitness_centers, display_index);
 
-        println!("Enter the ID of the fitness center you want to inspect:\n'n' -> next page\n'p' -> previous page");
+        println!("Enter the ID of the fitness center you want to inspect:\n'n' -> next page\n'p' -> previous page\n'e' -> exit");
         let mut input_id = String::new();
         io::stdin()
             .read_line(&mut input_id)
@@ -282,7 +285,8 @@ pub fn inspect() -> usize {
         let input_id = input_id.trim();
 
         if input_id == "e" {
-            break;
+            return -1 as i32;
+            
         }
 
         match input_id {
@@ -301,6 +305,7 @@ pub fn inspect() -> usize {
                     println!("You're already at the last page with {} records.", remaining);
                 }
             }
+         
             _ => {
                 if let Ok(parsed_index) = input_id.parse::<usize>() {
                     if parsed_index < fitness_centers.len() {
@@ -316,7 +321,7 @@ pub fn inspect() -> usize {
             }
         }
     }
-    display_index
+    return  display_index as i32
 }
 fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
     const PAGE_SIZE: usize = 10;
@@ -368,6 +373,10 @@ pub fn inspection(username:&String) {
         }
     }
     let  index=inspect();
+    
+    if index==-1{
+        return;
+    }
     let mut back = String::new();
     loop {
         let output = Command::new("cmd")
@@ -378,20 +387,21 @@ pub fn inspection(username:&String) {
                  if !output.success() {
                       eprintln!("Failed to clear terminal");
                              }
-        if index < fitness_centers.len() {
+                             println!("{}",index);
+        if (index as usize) < fitness_centers.len() {
                 println!("-----------------------------------------------------------------------------------");
-                println!("| ID: {}  Name: {}", index, fitness_centers[index].name);
-                println!("| Location: {}",fitness_centers[index].location);
-                println!("| Rating: {}/5 ({})",fitness_centers[index].score,fitness_centers[index].raaters);
-                println!("| One-time entry: {}€",fitness_centers[index].day_price);
-                println!("| Monthly subscription: {}€",fitness_centers[index].month_price);
-                println!("| Yearly subscription: {}€",fitness_centers[index].year_price);
+                println!("| ID: {}  Name: {}", index, fitness_centers[index as usize].name);
+                println!("| Location: {}",fitness_centers[index as usize].location);
+                println!("| Rating: {}/5 ({})",fitness_centers[index as usize].score,fitness_centers[index as usize].raaters);
+                println!("| One-time entry: {}€",fitness_centers[index as usize].day_price);
+                println!("| Monthly subscription: {}€",fitness_centers[index as usize].month_price);
+                println!("| Yearly subscription: {}€",fitness_centers[index as usize].year_price);
                 println!("-----------------------------------------------------------------------------------");
                 println!("Comment section:");
         } else {
                 println!("Index out of bounds!");
                 }
-                display_coment(index);
+                display_coment(index as usize);
                 
         println!("\nPress 'e' to go back or 'c' to comment fitness center");
         back.clear();
@@ -402,7 +412,7 @@ pub fn inspection(username:&String) {
         break;
         }
         else if back.trim()=="c"{
-            comment(username,index);
+            comment(username,index as usize);
         }
         
     }
