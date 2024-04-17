@@ -1,6 +1,5 @@
 use std::fs::File;
 use std::io::{self, BufRead};
-
 pub struct Person {
     name: String,
     value: i32,
@@ -14,7 +13,6 @@ impl Person {
         }
     }
 }
-
 pub struct Fitness {
     name: String,
     location: String,
@@ -34,14 +32,11 @@ impl Fitness {
 }
 
 pub fn top_rates() {
-    // Open the file
     if let Ok(file) = File::open("src/user_info.txt") {
         let mut people: Vec<Person> = Vec::new();
 
-        // Read the file line by line
         for line in io::BufReader::new(file).lines() {
             if let Ok(line) = line {
-                // Split each line into name and value
                 let parts: Vec<&str> = line.split(':').collect();
                 if parts.len() == 3 {
                     if let Ok(value) = parts[2].trim().parse::<i32>() {
@@ -52,7 +47,6 @@ pub fn top_rates() {
             }
         }
 
-        // Bubble sort the vector in descending order based on the value field
         for i in 0..people.len() {
             for j in 0..people.len() - 1 - i {
                 if people[j].value < people[j + 1].value {
@@ -61,7 +55,6 @@ pub fn top_rates() {
             }
         }
 
-        // Print the sorted vector;
         for (index, person) in people.iter().take(5).enumerate() {
             println!("{}. {} : {}", index + 1, person.name, person.value);
         }
@@ -71,17 +64,13 @@ pub fn top_rates() {
 }
 
 pub fn top_fitness() {
-    // Open the file
     if let Ok(file) = File::open("src/fittnes_info.txt") {
         let mut fitness_centers: Vec<Fitness> = Vec::new();
 
-        // Read the file line by line
         for line in io::BufReader::new(file).lines() {
             if let Ok(line) = line {
-                // Split each line into parts
                 let parts: Vec<&str> = line.split(':').collect();
                 if parts.len() == 12 {
-                    // Parse the parts into appropriate types
                     match (
                         parts[5].trim().parse::<f32>(),
                         parts[0].trim().parse::<String>(),
@@ -89,7 +78,7 @@ pub fn top_fitness() {
                         parts[11].trim().parse::<i32>(),
                     ) {
                         (Ok(score), Ok(name), Ok(location), Ok(number)) => {
-                            let fitness_center = Fitness::new(&name, &location, score, number); // Pass the number parameter
+                            let fitness_center = Fitness::new(&name, &location, score, number);
                             fitness_centers.push(fitness_center);
                         }
                         _ => {
@@ -104,10 +93,8 @@ pub fn top_fitness() {
             }
         }
         
-        // Sorting the fitness_centers vector by score
         fitness_centers.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap_or(std::cmp::Ordering::Equal));
 
-        // Print the top 5 fitness centers
         println!("Top 5 Fitness Centers:\n");
         for (index, fitness) in fitness_centers.iter().take(5).enumerate() {
             println!(

@@ -1,9 +1,9 @@
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, Write};
-use std::ops::Index;
 use std::process::Command;
 use std::path::Path;
-// Define a struct to represent fitness center information
+
+//fitness center information
 #[derive(Debug)]
 struct FitnessCenter {
     name: String,
@@ -18,10 +18,7 @@ struct FitnessCenter {
     whole: i32,
     service: i32,
     raaters: i32,
-
-
 }
-
 
 pub fn add_fit(){
     let mut name = String::new();
@@ -31,12 +28,10 @@ pub fn add_fit(){
     let mut rok_vstup = String::new();
 
     loop {
-        //Input meno
         println!("Enter name of Fittnes center:");
         name.clear();
         io::stdin().read_line(&mut name).expect("Failed to read name");
 
-        //Input heslo
         println!("Enter location:");
         location.clear();
         io::stdin().read_line(&mut location).expect("Failed to read location");
@@ -51,8 +46,6 @@ pub fn add_fit(){
         rok_vstup.clear();
         io::stdin().read_line(&mut rok_vstup).expect("0");
 
-
-        //Ak meno alebo heslo je prazdne vrati error a skusis zas
         if name.trim().is_empty()||location.trim().is_empty()||den_vstup.trim().is_empty(){
             println!("Name, location or price is empty");
         }
@@ -61,9 +54,11 @@ pub fn add_fit(){
             break;
         }
     }
+
     let den_vstup: i32 = den_vstup.trim().parse().expect("Invalid price for 1 day");
     let mes_vstup: i32 = mes_vstup.trim().parse().unwrap_or(0);
     let rok_vstup: i32 = rok_vstup.trim().parse().unwrap_or(0);
+
     //Inicializacia fileu
     let mut file = OpenOptions::new()
         .create(true)
@@ -80,67 +75,6 @@ pub fn add_fit(){
 
 }
 
-pub fn display_fitness() {
-    // Initialize an empty vector to store fitness center information
-    let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
-
-    // Open the file for reading
-    if let Ok(lines) = read_lines("src/fittnes_info.txt") {
-        // Iterate over lines
-        for line in lines {
-            if let Ok(ip) = line {
-                // Split the line by ':' delimiter
-                let parts: Vec<&str> = ip.split(':').collect();
-
-                // Ensure we have enough parts to create a FitnessCenter struct
-                if parts.len() == 12 {
-                    // Parse the parts into appropriate types
-                    let name = parts[0].to_string();
-                    let location = parts[1].to_string();
-                    let day_price = parts[2].parse().unwrap_or(0);
-                    let month_price = parts[3].parse().unwrap_or(0);
-                    let year_price = parts[4].parse().unwrap_or(0);
-                    let score=0.0;
-                    let clean=0;
-                    let personal=0;
-                    let equip=0;
-                    let whole=0;
-                    let service=0;
-                    let raaters=0;
-
-                    // Create a FitnessCenter instance and push it to the vector
-                    fitness_centers.push(FitnessCenter {
-                        name,
-                        location,
-                        day_price,
-                        month_price,
-                        year_price,
-                        score,
-                        clean,
-                        personal,
-                        equip,
-                        whole,
-                        service,
-                        raaters,
-                    });
-                }
-            }
-        }
-    }
-    // Now you have all fitness center information in `fitness_centers` vector
-    // You can further process or display this information as needed
-    let mut id = 0;
-    for center in &fitness_centers {
-        println!(
-"       -------------------------------------------------
-           | ID: {}  Name: {}     Location: {}",
-            id, center.name, center.location
-        );
-        id += 1;
-    }
-    println!("       -------------------------------------------------");
-}
-
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
@@ -152,17 +86,12 @@ where
 pub fn rate_fittnes(){
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
 
-    // Open the file for reading
     if let Ok(lines) = read_lines("src/fittnes_info.txt") {
-        // Iterate over lines
         for line in lines {
             if let Ok(ip) = line {
-                // Split the line by ':' delimiter
                 let parts: Vec<&str> = ip.split(':').collect();
 
-                // Ensure we have enough parts to create a FitnessCenter struct
                 if parts.len() == 12 {
-                    // Parse the parts into appropriate types
                     let name = parts[0].to_string();
                     let location = parts[1].to_string();
                     let day_price = parts[2].parse().unwrap_or(0);
@@ -176,7 +105,6 @@ pub fn rate_fittnes(){
                     let service = parts[10].parse().unwrap_or(0);
                     let raaters = parts[11].parse().unwrap_or(0);
 
-                    // Create a FitnessCenter instance and push it to the vector
                     fitness_centers.push(FitnessCenter {
                         name,
                         location,
@@ -196,11 +124,10 @@ pub fn rate_fittnes(){
         }
     }
     
-    let mut selected_id= inspect() as usize;
+    let selected_id= inspect() as usize;
 
     let selected_center = &mut fitness_centers[selected_id];
 
-    // Collect ratings for different aspects
     loop {
         println!("Enter ratings (0-5) for the following aspects:");
         
@@ -269,13 +196,11 @@ pub fn rate_fittnes(){
         };
         selected_center.service += service_rating;
     
-        // Exit the loop if all ratings are collected successfully
         break;
     }
-    // Increase the number of raters for the selected fitness center
     selected_center.raaters += 1;
     selected_center.score=((selected_center.clean*2+selected_center.personal*2+selected_center.equip*3+selected_center.whole*1+selected_center.service*1)as f32)/(selected_center.raaters*9)as f32;
-    // Rewrite the text file with updated ratings
+
     if let Ok(mut file) = File::create("src/fittnes_info.txt") {
         for center in &fitness_centers {
             writeln!(
@@ -335,7 +260,7 @@ pub fn inspect()->usize {
         }
     }
 
-    let mut index = 0;
+    let index;
     let mut display_index = 0;
     let mut _exit = false;
 
@@ -397,6 +322,7 @@ pub fn inspect()->usize {
     return display_index  ;
 
 }
+
 fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
     const PAGE_SIZE: usize = 10;
 
@@ -405,21 +331,16 @@ fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
         println!("ID: {} - Name: {}", i, fitness_center.name);
     }
 }
+
 pub fn inspection(username:&String) {
-    // Initialize an empty vector to store fitness center information
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
     
-    // Open the file for reading
     if let Ok(lines) = read_lines("src/fittnes_info.txt") {
-        // Iterate over lines
         for line in lines {
             if let Ok(ip) = line {
-                // Split the line by ':' delimiter
                 let parts: Vec<&str> = ip.split(':').collect();
 
-                // Ensure we have enough parts to create a FitnessCenter struct
                 if parts.len() == 12 {
-                    // Parse the parts into appropriate types
                     let name = parts[0].to_string();
                     let location = parts[1].to_string();
                     let day_price = parts[2].parse().unwrap_or(0);
@@ -433,7 +354,6 @@ pub fn inspection(username:&String) {
                     let service = 0;
                     let raaters = 0;
 
-                    // Create a FitnessCenter instance and push it to the vector
                     fitness_centers.push(FitnessCenter {
                         name,
                         location,
@@ -466,6 +386,7 @@ pub fn inspection(username:&String) {
         if index < fitness_centers.len() {
                 println!("-------------------------------------------------");
                 println!("| ID: {}  Name: {}  Location: {}", index, fitness_centers[index].name, fitness_centers[index].location);
+                println!("| Rating: {}/5({})",fitness_centers[index].score,fitness_centers[index].raaters);
                 println!("-------------------------------------------------");
         } else {
                 println!("Index out of bounds!");
@@ -485,11 +406,10 @@ pub fn inspection(username:&String) {
         }
         
     }
-    
-    // Check if the index is within bounds
- 
+     
 }
- fn comment(username:&String,index:usize){
+
+fn comment(username:&String,index:usize){
     println!("Coment:");
     let mut coment= String::new();
     coment.clear();
@@ -505,7 +425,7 @@ writeln!(file, "{}|{}:{}", index, username.trim(), coment.trim())
     .expect("Failed to write to file");
 println!("comment added");
 
- }
+}
  struct ComentLog {
     id: usize,
     comment: String,
@@ -514,21 +434,15 @@ println!("comment added");
 fn display_coment(index: usize) {
     let mut comments: Vec<ComentLog> = Vec::new();
 
-    // Open the file for reading
     if let Ok(lines) = read_lines("src/comment.txt") {
-        // Iterate over lines
         for line in lines {
             if let Ok(ip) = line {
-                // Split the line by '|' delimiter
                 let parts: Vec<&str> = ip.split('|').collect();
 
-                // Ensure we have enough parts to create a ComentLog struct
                 if parts.len() == 2 {
-                    // Parse the parts into appropriate types
                     let id = parts[0].parse::<usize>().unwrap_or(0);
                     let comment = parts[1].to_string();
 
-                    // Create a ComentLog instance and push it to the vector
                     comments.push(ComentLog {
                         id,
                         comment,
@@ -538,7 +452,6 @@ fn display_coment(index: usize) {
         }
     }
 
-    // Iterate through comments vector and print comment if id matches index
     for comment in &comments {
         if comment.id == index {
             println!("{}", comment.comment);

@@ -121,7 +121,7 @@ pub fn login() -> String{
 }
 
 fn username_exists(username: &str) -> bool {
-    //Funkcia skenne celuy file ci nenajde meno zo vstupu
+    //Funkcia skenne cely file ci nenajde meno zo vstupu
     if let Ok(file) = File::open("src/user_info.txt") {
         let reader = io::BufReader::new(file);
         for line in reader.lines() {
@@ -240,25 +240,19 @@ struct User {
 }
 
 pub fn score_update(username: String) {
-    // Create a vector to store user data
     let mut users: Vec<User> = Vec::new();
     println!("{}",username);
-    // Open the file for reading
     if let Ok(file) = File::open("src/user_info.txt") {
         let reader = BufReader::new(file);
 
-        // Iterate over lines in the file
         for line in reader.lines() {
             if let Ok(user_info) = line {
-                // Split the line by ':' delimiter
                 let parts: Vec<&str> = user_info.split(':').collect();
                 if parts.len() == 3 {
-                    // Parse user name, password, and score
                     let name = parts[0].trim().to_string();
                     let pass = parts[1].trim().to_string();
                     let score: i32 = parts[2].trim().parse().unwrap_or(0);
 
-                    // Create a User instance and push it to the vector
                     let user = User { name, score, pass };
                     users.push(user);
                 }
@@ -269,7 +263,6 @@ pub fn score_update(username: String) {
         return;
     }
 
-    // Find the user with the specified username
     if let Some(user) = users.iter_mut().find(|u| u.name == username) {
         user.score += 1;
         println!("Score updated for user {}.", username);
@@ -278,9 +271,7 @@ pub fn score_update(username: String) {
         return;
     }
 
-    // Open the file for writing
     if let Ok(mut file) = OpenOptions::new().write(true).truncate(true).open("src/user_info.txt") {
-        // Write updated user information back to the file
         for user in &users {
             writeln!(file, "{}:{}:{}", user.name, user.pass, user.score).expect("Failed to write to file");
         }
