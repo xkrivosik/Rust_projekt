@@ -379,15 +379,15 @@ pub fn inspection(username:&String) {
                       eprintln!("Failed to clear terminal");
                              }
         if index < fitness_centers.len() {
-                println!("------------------------");
+                println!("-----------------------------------------------------------------------------------");
                 println!("| ID: {}  Name: {}", index, fitness_centers[index].name);
                 println!("| Location: {}",fitness_centers[index].location);
                 println!("| Rating: {}/5 ({})",fitness_centers[index].score,fitness_centers[index].raaters);
                 println!("| One-time entry: {}€",fitness_centers[index].day_price);
                 println!("| Monthly subscription: {}€",fitness_centers[index].month_price);
                 println!("| Yearly subscription: {}€",fitness_centers[index].year_price);
-                println!("------------------------");
-                println!("Comment section:")
+                println!("-----------------------------------------------------------------------------------");
+                println!("Comment section:");
         } else {
                 println!("Index out of bounds!");
                 }

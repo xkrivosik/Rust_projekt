@@ -4,8 +4,7 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO V inspecte neukazuje pocet ratingov z nejakeho dovodu
-maybee gui?? */
+/*TODO to odhlasenie este, z nejakeho dovodu ked dam 'e' do rate ID alebo inspect ID tak inspectnem alebo ratenem fitup?? ,maybee gui?? */
 
 fn main() {
     //Command na vstup do appky
