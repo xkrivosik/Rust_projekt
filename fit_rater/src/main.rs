@@ -4,7 +4,7 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO to odhlasenie este, z nejakeho dovodu ked dam 'e' do rate ID alebo inspect ID tak inspectnem alebo ratenem fitup?? ,maybee gui?? */
+/*TODO to odhlasenie este, like/dislike na komentare ,maybee gui?? */
 
 fn main() {
     //Command na vstup do appky
