@@ -403,12 +403,9 @@ pub fn inspection(username:&String) {
                 println!("| Monthly subscription: {}€",fitness_centers[index as usize].month_price);
                 println!("| Yearly subscription: {}€",fitness_centers[index as usize].year_price);
                 println!("-----------------------------------------------------------------------------------");
-                println!("| Rating: {:.1}/5 ({})",fitness_centers[index as usize].score,fitness_centers[index as usize].raaters);
-                println!("| Cleanleness: {:.1}/5 ",(fitness_centers[index as usize].clean as f32)/(fitness_centers[index as usize].raaters as f32));
-                println!("| Personal: {:.1}/5 ",(fitness_centers[index as usize].personal as f32)/(fitness_centers[index as usize].raaters as f32));
-                println!("| Equipment: {:.1}/5 ",(fitness_centers[index as usize].equip as f32)/(fitness_centers[index as usize].raaters as f32));
-                println!("| Over all experience: {:.1}/5 ",(fitness_centers[index as usize].whole as f32)/(fitness_centers[index as usize].raaters as f32));
-                println!("| Services: {:.1}/5 ",(fitness_centers[index as usize].service as f32)/(fitness_centers[index as usize].raaters as f32));
+                println!("| Rating: {:.1}/5 ({})\tServices: {:.1}/5 ",fitness_centers[index as usize].score,fitness_centers[index as usize].raaters,(fitness_centers[index as usize].service as f32)/(fitness_centers[index as usize].raaters as f32));
+                println!("| Cleanleness: {:.1}/5\tPersonal: {:.1}/5 ",(fitness_centers[index as usize].clean as f32)/(fitness_centers[index as usize].raaters as f32),(fitness_centers[index as usize].personal as f32)/(fitness_centers[index as usize].raaters as f32));
+                println!("| Equipment: {:.1}/5\tOver all experience: {:.1}/5 ",(fitness_centers[index as usize].equip as f32)/(fitness_centers[index as usize].raaters as f32),(fitness_centers[index as usize].whole as f32)/(fitness_centers[index as usize].raaters as f32));
                 println!("-----------------------------------------------------------------------------------");
                 println!("Comment section:");
         } else {

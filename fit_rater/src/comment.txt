@@ -1,8 +1,4 @@
 0|a:pohodka|2|1
-0|a:pomoc|0|0
-1|a:sakdfkasd|0|0
-1|a:asdfkjasdjf|0|0
-0|a:lskjdfalsj|0|0
-5|a:kjshdlfihasdi|0|0
-5|a:lsdjhfiasdi|0|0
-0|a:jdsfhiasf|0|0
+0|a:pomoc|1|0
+0|a:e|0|0
+0|a:e|0|0
