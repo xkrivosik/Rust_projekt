@@ -1,5 +1,8 @@
-0|a:fajn
-2|a:super fitko ale malo pristoru
-0|a:bombaklad
-1|a:Chodím sem často je to super
-0|Andy:Fakt super posilka, chodím sem s Toškom a som velice spokojný so strojami aj s Toškovími tréningami ;)
+0|a:pohodka|2|1
+0|a:pomoc|0|0
+1|a:sakdfkasd|0|0
+1|a:asdfkjasdjf|0|0
+0|a:lskjdfalsj|0|0
+5|a:kjshdlfihasdi|0|0
+5|a:lsdjhfiasdi|0|0
+0|a:jdsfhiasf|0|0

@@ -1,7 +1,9 @@
 use std::fs::{File, OpenOptions};
-use std::io::{self, BufRead, Write};
+use std::io::{self, BufRead, BufWriter, Write};
 use std::process::Command;
 use std::path::Path;
+
+use  crate::user;
 
 //fitness center information
 #[derive(Debug)]
@@ -331,7 +333,12 @@ fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
         println!("ID: {} - Name: {}", i, fitness_center.name);
     }
 }
-
+struct ComentLog {
+    id: usize,
+    comment: String,
+    like: usize,
+    dislike: usize,
+}
 pub fn inspection(username:&String) {
     let mut fitness_centers: Vec<FitnessCenter> = Vec::new();
     
@@ -347,11 +354,11 @@ pub fn inspection(username:&String) {
                     let month_price = parts[3].parse().unwrap_or(0);
                     let year_price = parts[4].parse().unwrap_or(0);
                     let score = parts[5].parse().unwrap_or(0.0);
-                    let clean = 0;
-                    let personal = 0;
-                    let equip = 0;
-                    let whole = 0;
-                    let service = 0;
+                    let clean = parts[6].parse().unwrap_or(0);
+                    let personal = parts[7].parse().unwrap_or(0);
+                    let equip = parts[8].parse().unwrap_or(0);
+                    let whole = parts[9].parse().unwrap_or(0);
+                    let service = parts[10].parse().unwrap_or(0);
                     let raaters = parts[11].parse().unwrap_or(0);
 
                     fitness_centers.push(FitnessCenter {
@@ -387,15 +394,21 @@ pub fn inspection(username:&String) {
                  if !output.success() {
                       eprintln!("Failed to clear terminal");
                              }
-                             println!("{}",index);
+                            
         if (index as usize) < fitness_centers.len() {
                 println!("-----------------------------------------------------------------------------------");
                 println!("| ID: {}  Name: {}", index, fitness_centers[index as usize].name);
                 println!("| Location: {}",fitness_centers[index as usize].location);
-                println!("| Rating: {}/5 ({})",fitness_centers[index as usize].score,fitness_centers[index as usize].raaters);
                 println!("| One-time entry: {}€",fitness_centers[index as usize].day_price);
                 println!("| Monthly subscription: {}€",fitness_centers[index as usize].month_price);
                 println!("| Yearly subscription: {}€",fitness_centers[index as usize].year_price);
+                println!("-----------------------------------------------------------------------------------");
+                println!("| Rating: {:.1}/5 ({})",fitness_centers[index as usize].score,fitness_centers[index as usize].raaters);
+                println!("| Cleanleness: {:.1}/5 ",(fitness_centers[index as usize].clean as f32)/(fitness_centers[index as usize].raaters as f32));
+                println!("| Personal: {:.1}/5 ",(fitness_centers[index as usize].personal as f32)/(fitness_centers[index as usize].raaters as f32));
+                println!("| Equipment: {:.1}/5 ",(fitness_centers[index as usize].equip as f32)/(fitness_centers[index as usize].raaters as f32));
+                println!("| Over all experience: {:.1}/5 ",(fitness_centers[index as usize].whole as f32)/(fitness_centers[index as usize].raaters as f32));
+                println!("| Services: {:.1}/5 ",(fitness_centers[index as usize].service as f32)/(fitness_centers[index as usize].raaters as f32));
                 println!("-----------------------------------------------------------------------------------");
                 println!("Comment section:");
         } else {
@@ -403,7 +416,7 @@ pub fn inspection(username:&String) {
                 }
                 display_coment(index as usize);
                 
-        println!("\nPress 'e' to go back or 'c' to comment fitness center");
+        println!("\nPress 'e' to go back, 'c' to comment fitness center or 'r' to rate comment");
         back.clear();
         io::stdin().read_line(&mut back).expect("Failed to read command.");
 
@@ -414,9 +427,97 @@ pub fn inspection(username:&String) {
         else if back.trim()=="c"{
             comment(username,index as usize);
         }
+        else if back.trim() == "r" {
+            rate_comment(index as usize);
+        }
         
     }
      
+}
+fn rate_comment(index: usize) {
+    let mut comments: Vec<ComentLog> = Vec::new();
+
+    if let Ok(lines) = read_lines("src/comment.txt") {
+        for line in lines {
+            if let Ok(ip) = line {
+                let parts: Vec<&str> = ip.split('|').collect();
+
+                if parts.len() == 4 {
+                    let id = parts[0].parse::<usize>().unwrap_or(0);
+                    let comment = parts[1].to_string();
+                    let like = parts[2].parse::<usize>().unwrap_or(0);
+                    let dislike = parts[3].parse::<usize>().unwrap_or(0);
+
+                    comments.push(ComentLog {
+                        id,
+                        comment,
+                        like,
+                        dislike,
+                    });
+                }
+            }
+        }
+    }
+
+    println!("Enter the index of the comment to rate:");
+    let mut poradie = String::new();
+    io::stdin().read_line(&mut poradie).expect("Failed to read input");
+
+    let hladany_index: usize = match poradie.trim().parse() {
+        Ok(num) => num,
+        Err(_) => {
+            println!("Invalid input. Please enter a valid number.");
+            return;
+        }
+    };
+
+    println!("Press 'l' to like or 'd' to dislike:");
+    let mut reaction = String::new();
+    io::stdin().read_line(&mut reaction).expect("Failed to read input");
+
+    if reaction.trim() == "l" {
+        if comments[hladany_index].id == index {
+            comments[hladany_index].like += 1;
+            let qd = comments[hladany_index].comment.clone();
+            let pole: Vec<&str> = qd.split(':').collect();
+            user::score_update(pole[0].trim().to_string().clone());
+        }
+    } else if reaction.trim() == "d" {
+        if comments[hladany_index].id == index {
+            comments[hladany_index].dislike += 1;
+        }
+    } else {
+        println!("Invalid reaction.");
+        return;
+    }
+
+    // Open the file in write mode and handle errors
+    let file = match File::create("src/comment.txt") {
+        Ok(file) => file,
+        Err(e) => {
+            println!("Failed to create file: {}", e);
+            return;
+        }
+    };
+
+    let mut writer = BufWriter::new(file);
+
+    // Write the updated comments to the file
+    for comment in &comments {
+        if let Err(e) = writeln!(
+            writer,
+            "{}|{}|{}|{}",
+            comment.id, comment.comment, comment.like, comment.dislike
+        ) {
+            println!("Failed to write comment: {}", e);
+            return;
+        }
+    }
+
+    // Flush the buffer to ensure all data is written
+    if let Err(e) = writer.flush() {
+        println!("Failed to flush buffer: {}", e);
+    }
 }
 
 fn comment(username:&String,index:usize){
@@ -431,15 +532,12 @@ fn comment(username:&String,index:usize){
     .expect("Failed to open file");
 
 //Ulozenie do fileu
-writeln!(file, "{}|{}:{}", index, username.trim(), coment.trim())
+writeln!(file, "{}|{}:{}|0|0", index, username.trim(), coment.trim())
     .expect("Failed to write to file");
 println!("comment added");
 
 }
- struct ComentLog {
-    id: usize,
-    comment: String,
-}
+
 
 fn display_coment(index: usize) {
     let mut comments: Vec<ComentLog> = Vec::new();
@@ -449,23 +547,31 @@ fn display_coment(index: usize) {
             if let Ok(ip) = line {
                 let parts: Vec<&str> = ip.split('|').collect();
 
-                if parts.len() == 2 {
+                if parts.len() == 4{
                     let id = parts[0].parse::<usize>().unwrap_or(0);
                     let comment = parts[1].to_string();
+                    let like=parts[2].parse::<usize>().unwrap_or(0);
+                    let dislike=parts[3].parse::<usize>().unwrap_or(0);
 
                     comments.push(ComentLog {
                         id,
                         comment,
+                        like,
+                        dislike,
                     });
                 }
             }
         }
     }
-
+    let mut count =0;
     for comment in &comments {
         if comment.id == index {
-            println!("{}", comment.comment);
+            println!("{}. {}
+like:{} | dislike:{}
+", count,comment.comment,comment.like,comment.dislike);
+            
         }
+        count+=1;
     }
-   
+
 }

@@ -5,15 +5,23 @@ mod display_top;
 mod fitness;
 
 /*TODO to odhlasenie este, like/dislike na komentare ,maybee gui?? */
-
+static mut  CURRENT_USER:String= String::new();
+static mut  CURRENT_USER_SCORE:i32=0;
+static mut CURRENT_USER_RANK:String= String::new();
 fn main() {
     //Command na vstup do appky
     let mut step = String::new();
-    let current_user:String;
-    let mut current_user_score:i32;
-    let mut current_user_rank:String;
-
+loop{
     loop {
+        let output = Command::new("cmd")
+            .args(&["/C", "cls"])
+            .status()
+            .expect("Failed to clear terminal");
+
+            if !output.success() {
+                eprintln!("Failed to clear terminal");
+            }
+
         println!("1: Login\n2: Register\n3: Exit\n\nEnter command: ");
         step.clear();
         io::stdin().read_line(&mut step).expect("Failed to read command.");
@@ -22,6 +30,15 @@ fn main() {
             println!("Failed to read input.");
         }
         else if step.trim()=="3"{
+            let output = Command::new("cmd")
+            .args(&["/C", "cls"])
+            .status()
+            .expect("Failed to clear terminal");
+
+            if !output.success() {
+                eprintln!("Failed to clear terminal");
+            }
+
             return;
         }
         else if step.trim()=="2"{
@@ -33,7 +50,9 @@ fn main() {
                     if !output.success() {
                         eprintln!("Failed to clear terminal");
                     }
-            current_user = user::register();
+             unsafe {
+                CURRENT_USER = user::register();
+             }
             break;
         }
         else if step.trim()=="1"{
@@ -45,7 +64,10 @@ fn main() {
                     if !output.success() {
                         eprintln!("Failed to clear terminal");
                     }
-            current_user = user::login();
+                    unsafe{
+                        CURRENT_USER = user::login();
+                    }
+             
             break;
         }
         else {
@@ -58,8 +80,10 @@ fn main() {
 
     //Chcel by som tu dat moznost sa odhlasit namiesto exit ale neviem ako
     loop{
-        current_user_score = user::get_score(&current_user.trim());
-        current_user_rank = user::get_rank(current_user_score);            
+        unsafe{
+        CURRENT_USER_SCORE = user::get_score(&CURRENT_USER.trim());
+        CURRENT_USER_RANK = user::get_rank(CURRENT_USER_SCORE); 
+        }           
         let output = Command::new("cmd")
             .args(&["/C", "cls"])
             .status()
@@ -73,7 +97,7 @@ fn main() {
         1: Check your profile       2: Rate
         3: Inspect fitness          4: Display best fitness centres
         5: Add a fitness centre     6: Diplay best Raters
-        7: Exit");
+        7: Exit                     e: log out");
         println!("Enter command:");
         
         app_command.clear();
@@ -91,7 +115,9 @@ fn main() {
                         if !output.success() {
                               eprintln!("Failed to clear terminal");
                         }
-            println!("Name: {}Score: {}\nRank: {}",current_user, current_user_score, current_user_rank);
+            unsafe{
+            println!("Name: {}Score: {}\nRank: {}",CURRENT_USER, CURRENT_USER_SCORE, CURRENT_USER_RANK);
+            }
             let mut back = String::new();
 
             loop {
@@ -114,7 +140,9 @@ fn main() {
                          if !output.success() {
                               eprintln!("Failed to clear terminal");
                                      }
-                println!("Name: {}Score: {}",current_user, current_user_score);
+                unsafe{
+                println!("Name: {}Score: {}",CURRENT_USER, CURRENT_USER_SCORE);
+                }
             }
         }
         else if app_command.trim()=="2"{
@@ -128,7 +156,9 @@ fn main() {
                         }
             
             fitness::rate_fittnes();
-            user::score_update(current_user.trim().to_string().clone());
+            unsafe{
+            user::score_update(CURRENT_USER.trim().to_string().clone());
+            }
                }
         else if app_command.trim()=="6"{
             let output = Command::new("cmd")
@@ -236,15 +266,30 @@ fn main() {
                         if !output.success() {
                               eprintln!("Failed to clear terminal");
                         }
-            fitness::inspection(&current_user);
+            unsafe{
+            fitness::inspection(&CURRENT_USER);
+            }
             
         }
         else if app_command.trim()=="7"{
+            let output = Command::new("cmd")
+            .args(&["/C", "cls"])
+            .status()
+            .expect("Failed to clear terminal");
+
+            if !output.success() {
+                eprintln!("Failed to clear terminal");
+            }
+
             return;
         }
-        else {
-            println!(" ");
+        else if app_command.trim()=="e" {
+            
+            break;
+        }
+        else{
+            print!(" ");
         }
     }
-    
+}
 }

@@ -99,7 +99,7 @@ pub fn top_fitness() {
         for (index, fitness) in fitness_centers.iter().take(5).enumerate() {
             println!(
                 "{}. {}       {} 
-score: {:.2}       rates: {}\n",
+score: {:.1}       rates: {}\n",
                 index + 1,
                 fitness.name,
                 fitness.location,
