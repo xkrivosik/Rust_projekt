@@ -3,6 +3,8 @@ use std::io::{self, BufRead, BufWriter, Write};
 use std::process::Command;
 use std::path::Path;
 
+use chrono::{DateTime, Local};
+
 use  crate::user;
 
 //fitness center information
@@ -335,6 +337,7 @@ fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
 }
 struct ComentLog {
     id: usize,
+    indexx: String,
     comment: String,
     like: usize,
     dislike: usize,
@@ -433,27 +436,41 @@ pub fn inspection(username:&String) {
 }
 fn rate_comment(index: usize) {
     let mut comments: Vec<ComentLog> = Vec::new();
-
+    let mut good_coments:Vec<ComentLog>=Vec::new();
     if let Ok(lines) = read_lines("src/comment.txt") {
         for line in lines {
             if let Ok(ip) = line {
                 let parts: Vec<&str> = ip.split('|').collect();
 
-                if parts.len() == 4 {
+                if parts.len() == 5 {
                     let id = parts[0].parse::<usize>().unwrap_or(0);
-                    let comment = parts[1].to_string();
-                    let like = parts[2].parse::<usize>().unwrap_or(0);
-                    let dislike = parts[3].parse::<usize>().unwrap_or(0);
+                    let indexx = parts[1].to_string();
+                    let comment = parts[2].to_string();
+                    let like = parts[3].parse::<usize>().unwrap_or(0);
+                    let dislike = parts[4].parse::<usize>().unwrap_or(0);
 
                     comments.push(ComentLog {
                         id,
+                        indexx,
                         comment,
                         like,
                         dislike,
                     });
+                    
                 }
             }
         }
+    }
+    for come in comments{
+        if come.id==index{
+            good_coments.push(ComentLog{
+                come.id,
+                come.indexx,
+                come.comment,
+                come.like,
+                come.dislike,
+            })
+        }   
     }
 
     println!("Enter the index of the comment to rate:");
@@ -471,14 +488,19 @@ fn rate_comment(index: usize) {
     println!("Press 'l' to like or 'd' to dislike:");
     let mut reaction = String::new();
     io::stdin().read_line(&mut reaction).expect("Failed to read input");
-
+    //upravit na mapovanie funkcii mame pole good_comments ktore obsahuje len comenty ku danemu fitku 
     if reaction.trim() == "l" {
-        if comments[hladany_index].id == index {
+        for com in &comments{
+            if good_coments[hladany_index].indexx==com.indexx{
+
+            }
+        }
+        /*if comments[hladany_index].id == index  {
             comments[hladany_index].like += 1;
             let qd = comments[hladany_index].comment.clone();
             let pole: Vec<&str> = qd.split(':').collect();
             user::score_update(pole[0].trim().to_string().clone());
-        }
+        }*/
     } else if reaction.trim() == "d" {
         if comments[hladany_index].id == index {
             comments[hladany_index].dislike += 1;
@@ -529,10 +551,14 @@ fn comment(username:&String,index:usize){
     .expect("Failed to open file");
 
 //Ulozenie do fileu
-writeln!(file, "{}|{}:{}|0|0", index, username.trim(), coment.trim())
+let time_index = current_time_and_date();
+writeln!(file, "{}|{}|{}:{}|0|0", index,time_index, username.trim(), coment.trim())
     .expect("Failed to write to file");
 println!("comment added");
 
+}
+fn current_time_and_date() -> DateTime<Local> {
+    Local::now()
 }
 
 
@@ -544,14 +570,16 @@ fn display_coment(index: usize) {
             if let Ok(ip) = line {
                 let parts: Vec<&str> = ip.split('|').collect();
 
-                if parts.len() == 4{
+                if parts.len() == 5{
                     let id = parts[0].parse::<usize>().unwrap_or(0);
-                    let comment = parts[1].to_string();
-                    let like=parts[2].parse::<usize>().unwrap_or(0);
-                    let dislike=parts[3].parse::<usize>().unwrap_or(0);
+                    let indexx = parts[1].to_string();
+                    let comment = parts[2].to_string();
+                    let like = parts[3].parse::<usize>().unwrap_or(0);
+                    let dislike = parts[4].parse::<usize>().unwrap_or(0);
 
                     comments.push(ComentLog {
                         id,
+                        indexx,
                         comment,
                         like,
                         dislike,
@@ -566,9 +594,9 @@ fn display_coment(index: usize) {
             println!("{}. {}
 like:{} | dislike:{}
 ", count,comment.comment,comment.like,comment.dislike);
-            
+count+=1;  
         }
-        count+=1;
+        
     }
 
 }
