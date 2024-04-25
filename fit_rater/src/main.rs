@@ -4,7 +4,6 @@ mod  user;
 mod display_top;
 mod fitness;
 
-/*TODO to odhlasenie este, like/dislike na komentare ,maybee gui?? */
 static mut  CURRENT_USER:String= String::new();
 static mut  CURRENT_USER_SCORE:i32=0;
 static mut CURRENT_USER_RANK:String= String::new();
@@ -78,7 +77,6 @@ loop{
     //Command pre pohyb v appke
     let mut app_command = String::new();
 
-    //Chcel by som tu dat moznost sa odhlasit namiesto exit ale neviem ako
     loop{
         unsafe{
         CURRENT_USER_SCORE = user::get_score(&CURRENT_USER.trim());
