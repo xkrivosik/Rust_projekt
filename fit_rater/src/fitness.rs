@@ -1,5 +1,5 @@
 use std::fs::{File, OpenOptions};
-use std::io::{self, BufRead, BufWriter, Write};
+use std::io::{self, BufRead, BufReader, BufWriter, Write};
 use std::process::Command;
 use std::path::Path;
 
@@ -436,9 +436,13 @@ pub fn inspection(username:&String) {
 }
 fn rate_comment(index: usize) {
     let mut comments: Vec<ComentLog> = Vec::new();
-    let mut good_coments:Vec<ComentLog>=Vec::new();
-    if let Ok(lines) = read_lines("src/comment.txt") {
-        for line in lines {
+    let mut good_comments: Vec<ComentLog> = Vec::new();
+
+    // Read lines from the file
+    if let Ok(file) = File::open("src/comment.txt") {
+        let reader = BufReader::new(file);
+
+        for line in reader.lines() {
             if let Ok(ip) = line {
                 let parts: Vec<&str> = ip.split('|').collect();
 
@@ -449,29 +453,35 @@ fn rate_comment(index: usize) {
                     let like = parts[3].parse::<usize>().unwrap_or(0);
                     let dislike = parts[4].parse::<usize>().unwrap_or(0);
 
-                    comments.push(ComentLog {
+                    let comment_log = ComentLog {
                         id,
-                        indexx,
-                        comment,
+                        indexx: indexx.clone(),
+                        comment: comment.clone(),
                         like,
                         dislike,
-                    });
-                    
+                    };
+
+                    comments.push(comment_log);
+
+                    // Check if the ID matches the given index
+                    if id == index {
+                        good_comments.push(ComentLog {
+                            id,
+                            indexx,
+                            comment,
+                            like,
+                            dislike,
+                        });
+                    }
                 }
             }
         }
+    } else {
+        println!("Failed to open file.");
+        return;
     }
-    for come in comments{
-        if come.id==index{
-            good_coments.push(ComentLog{
-                come.id,
-                come.indexx,
-                come.comment,
-                come.like,
-                come.dislike,
-            })
-        }   
-    }
+   
+    
 
     println!("Enter the index of the comment to rate:");
     let mut poradie = String::new();
@@ -490,9 +500,12 @@ fn rate_comment(index: usize) {
     io::stdin().read_line(&mut reaction).expect("Failed to read input");
     //upravit na mapovanie funkcii mame pole good_comments ktore obsahuje len comenty ku danemu fitku 
     if reaction.trim() == "l" {
-        for com in &comments{
-            if good_coments[hladany_index].indexx==com.indexx{
-
+        for  com in &mut comments{
+            if good_comments[hladany_index].indexx==com.indexx{
+                let splited:Vec<&str>=good_comments[hladany_index].comment.split(':').collect();
+                let name= splited[0].trim().to_string();
+                user::score_update(name);
+                com.like += 1;
             }
         }
         /*if comments[hladany_index].id == index  {
@@ -502,8 +515,10 @@ fn rate_comment(index: usize) {
             user::score_update(pole[0].trim().to_string().clone());
         }*/
     } else if reaction.trim() == "d" {
-        if comments[hladany_index].id == index {
-            comments[hladany_index].dislike += 1;
+        for  com in &mut comments{
+            if good_comments[hladany_index].indexx==com.indexx{
+                com.dislike += 1;
+            }
         }
     } else {
         println!("Invalid reaction.");
@@ -525,8 +540,8 @@ fn rate_comment(index: usize) {
     for comment in &comments {
         if let Err(e) = writeln!(
             writer,
-            "{}|{}|{}|{}",
-            comment.id, comment.comment, comment.like, comment.dislike
+            "{}|{}|{}|{}|{}",
+            comment.id,comment.indexx, comment.comment, comment.like, comment.dislike
         ) {
             println!("Failed to write comment: {}", e);
             return;
