@@ -1,1 +1,0 @@
-C:\Users\titob\OneDrive\Desktop\rust\ projekt\rustprojekt\quizzer\target\debug\quizzer.exe: C:\Users\titob\OneDrive\Desktop\rust\ projekt\rustprojekt\quizzer\src\bin\quizzer\main.rs C:\Users\titob\OneDrive\Desktop\rust\ projekt\rustprojekt\quizzer\src\lib.rs

@@ -279,7 +279,10 @@ pub fn inspect() -> i32 {
             eprintln!("Failed to clear terminal");
         }
         display_fitnessi(&fitness_centers, display_index);
-
+        match count_lines_in_file("src/fittnes_info.txt") {
+            Ok(count) => println!("Showing 5 out of {} centers", count),
+            Err(err) => eprintln!("Error: {}", err),
+        }
         println!("Enter the ID of the fitness center you want to inspect:\n'n' -> next page\n'p' -> previous page\n'e' -> exit");
         let mut input_id = String::new();
         io::stdin()
@@ -614,4 +617,16 @@ count+=1;
         
     }
 
+}
+
+fn count_lines_in_file(file_path: &str) -> io::Result<usize> {
+    let file = File::open(file_path)?;
+    let reader = io::BufReader::new(file);
+    let mut line_count = 0;
+
+    for _ in reader.lines() {
+        line_count += 1;
+    }
+
+    Ok(line_count)
 }
