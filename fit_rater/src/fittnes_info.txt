@@ -4,3 +4,8 @@ Hamilton Fitness Club:Galéria Cubicon, Mlynská dolina – Staré Grunty 24, 84
 Spartakus Fight Gym:Zelenečská 119, 917 01 Trnava:8:50:300:3.28:7:8:6:5:6:2
 FITINN:Poštová 503, 811 06 Staré Mesto:1:15:150:4.61:13:7:10:5:8:2
 tosova garaz:tosova garaz:5:15:155:3.78:5:4:2:5:5:1
+gym:trnava:5:36:200:0.00:0:0:0:0:0:0
+gym2:trnava:7:45:135:0.00:0:0:0:0:0:0
+herkules fitness:galanta:10:80:350:5.00:5:5:5:5:5:1
+gym3:presov:9:53:28:0.00:0:0:0:0:0:0
+gym4:kolarovo:4:36:128:0.00:0:0:0:0:0:0

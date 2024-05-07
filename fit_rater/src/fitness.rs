@@ -268,7 +268,8 @@ pub fn inspect() -> i32 {
     }
 
     let mut display_index = 0;
-
+    let mut page=1;
+    let mut count_print=0;
     loop {
         let output = Command::new("cmd")
             .args(&["/C", "cls"])
@@ -279,8 +280,21 @@ pub fn inspect() -> i32 {
             eprintln!("Failed to clear terminal");
         }
         display_fitnessi(&fitness_centers, display_index);
+        
         match count_lines_in_file("src/fittnes_info.txt") {
-            Ok(count) => println!("Showing 5 out of {} centers", count),
+            Ok(count) =>{ 
+                if count_print+5<count{
+                    println!("Showing: {}-{}   total number of centers: {} 
+page: {}",count_print ,count_print+4,count ,page)
+                }
+                else{
+                    println!("Showing: {}-{}   total number of centers: {}
+page: {}",count_print ,count-1,count ,page)
+                }
+
+
+},
+
             Err(err) => eprintln!("Error: {}", err),
         }
         println!("Enter the ID of the fitness center you want to inspect:\n'n' -> next page\n'p' -> previous page\n'e' -> exit");
@@ -298,15 +312,19 @@ pub fn inspect() -> i32 {
 
         match input_id {
             "p" => {
-                if display_index >= 10 {
-                    display_index -= 10;
+                if display_index >= 5 {
+                    display_index -= 5;
+                    page-=1;
+                    count_print-=5
                 } else {
                     println!("You're already at the first page.");
                 }
             }
             "n" => {
-                if display_index + 10 < fitness_centers.len() {
-                    display_index += 10;
+                if display_index + 5 < fitness_centers.len() {
+                    display_index += 5;
+                    page+=1;
+                    count_print+=5;
                 } else {
                     let remaining = fitness_centers.len() - display_index - 1;
                     println!("You're already at the last page with {} records.", remaining);
@@ -331,7 +349,7 @@ pub fn inspect() -> i32 {
     return  display_index as i32
 }
 fn display_fitnessi(fitness_centers: &Vec<FitnessCenter>, start_index: usize) {
-    const PAGE_SIZE: usize = 10;
+    const PAGE_SIZE: usize = 5;
 
     println!("Fitness Centers:");
     for (i, fitness_center) in fitness_centers.iter().enumerate().skip(start_index).take(PAGE_SIZE) {

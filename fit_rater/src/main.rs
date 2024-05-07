@@ -3,7 +3,7 @@ use std::process::Command;
 mod  user;
 mod display_top;
 mod fitness;
-//TODO opravit inspect
+
 static mut  CURRENT_USER:String= String::new();
 static mut  CURRENT_USER_SCORE:i32=0;
 static mut CURRENT_USER_RANK:String= String::new();
