@@ -4,5 +4,4 @@ majko:wjpov:86
 b:2;8:0
 toso:6A;;:25
 c:d:0
-monika:cjteu:0
-tomas:bqun:0
+test:inypv:2
